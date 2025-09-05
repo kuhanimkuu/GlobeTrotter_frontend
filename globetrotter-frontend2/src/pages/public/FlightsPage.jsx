@@ -1,4 +1,3 @@
-// src/pages/public/flightspage.jsx
 import React, { useState, useEffect } from 'react';
 import FlightCard from '../../components/cards/FlightCard';
 import { api } from '../../services/api';

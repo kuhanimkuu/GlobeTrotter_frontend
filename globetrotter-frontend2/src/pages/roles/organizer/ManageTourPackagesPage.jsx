@@ -1,4 +1,3 @@
-// src/pages/roles/organizer/ManageTourPackagesPage.jsx
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../../contexts/useAuth";
 import { api } from "../../../services/api";

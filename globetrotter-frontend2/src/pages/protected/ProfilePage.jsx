@@ -1,4 +1,3 @@
-// src/pages/protected/profilepage.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { api } from '../../services/api';

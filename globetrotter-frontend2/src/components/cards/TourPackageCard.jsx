@@ -1,8 +1,7 @@
-// src/components/cards/TourPackageCard.jsx
 import { Link } from 'react-router-dom';
 import { Star, MapPin, Calendar, Users } from 'lucide-react';
 
-const TourPackageCard = ({ tourPackage }) => {  // Changed from 'package' to 'tourPackage'
+const TourPackageCard = ({ tourPackage }) => { 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       {/* Image */}

@@ -1,4 +1,3 @@
-// src/pages/protected/bookingspage.jsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { format } from '../../utils/format';
@@ -28,7 +27,7 @@ const BookingsPage = () => {
   const handleCancelBooking = async (bookingId) => {
     try {
       await api.booking.cancel(bookingId);
-      loadBookings(); // Refresh list
+      loadBookings(); 
     } catch (err) {
       setError('Failed to cancel booking');
     }

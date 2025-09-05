@@ -1,4 +1,3 @@
-// src/pages/auth/LoginPage.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/useAuth';
@@ -16,7 +15,7 @@ const LoginPage = () => {
       password: ''
     },
     async (formValues) => {
-      // ✅ Validate required fields
+      //  Validate required fields
       const requiredFields = ['username', 'password'];
       for (let field of requiredFields) {
         const errorMsg = validateRequired(formValues[field], field);
@@ -27,7 +26,7 @@ const LoginPage = () => {
       }
 
       try {
-        await login(formValues); // { username, password }
+        await login(formValues); 
         navigate('/dashboard');
       } catch (err) {
         setError(err.response?.data?.detail || 'Login failed');

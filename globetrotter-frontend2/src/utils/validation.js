@@ -67,11 +67,6 @@ export const validateForm = (values, rules) => {
   
   return errors;
 };
-
-// src/utils/validation.js
-
-// ... your existing validateEmail, validatePassword, etc.
-
 export const validation = {
   email: validateEmail,
   password: validatePassword,

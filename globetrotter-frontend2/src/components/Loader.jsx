@@ -1,4 +1,3 @@
-// src/components/Loader.jsx
 const Loader = ({ size = 'medium', className = '' }) => {
   const sizeClasses = {
     small: 'w-6 h-6',

@@ -1,4 +1,3 @@
-// src/pages/public/carspage.jsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import CarCard from '../../components/cards/CarCard';

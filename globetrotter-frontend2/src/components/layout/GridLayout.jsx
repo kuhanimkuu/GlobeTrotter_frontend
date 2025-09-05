@@ -1,4 +1,3 @@
-// src/components/layout/GridLayout.jsx
 import Loader from '../Loader';
 
 const GridLayout = ({ items, renderItem, loading, columns = 3, emptyMessage = "No items found" }) => {

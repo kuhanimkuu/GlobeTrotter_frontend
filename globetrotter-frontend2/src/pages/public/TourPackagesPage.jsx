@@ -1,4 +1,3 @@
-// src/pages/public/tourpackagespage.jsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import TourPackageCard from '../../components/cards/TourPackageCard';

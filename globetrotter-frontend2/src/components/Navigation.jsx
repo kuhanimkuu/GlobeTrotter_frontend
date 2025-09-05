@@ -1,4 +1,3 @@
-// src/components/Navigation.jsx
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/useAuth";
 import RoleBasedContent from "./RoleBasedContent";
@@ -41,7 +40,6 @@ const Navigation = () => {
 
           {/* Right section */}
           <div className="flex items-center space-x-6">
-            {/* Customer only: show My Bookings if logged in */}
             {isAuthenticated && (
               <RoleBasedContent forRole="customer">
                 <Link to="/bookings" className="text-gray-700 hover:text-blue-600">

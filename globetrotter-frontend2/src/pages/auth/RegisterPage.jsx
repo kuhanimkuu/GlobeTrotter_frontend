@@ -1,4 +1,3 @@
-// src/pages/auth/RegisterPage.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../../services/api';
@@ -17,7 +16,7 @@ const RegisterPage = () => {
       password2: '',
       first_name: '',
       last_name: '',
-      role: 'CUSTOMER', // default role
+      role: 'CUSTOMER', 
     },
     async (formValues) => {
       const requiredFields = ['username', 'email', 'password', 'password2'];

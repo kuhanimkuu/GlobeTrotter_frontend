@@ -1,4 +1,3 @@
-// src/components/cards/ReviewCard.jsx
 import { Star } from 'lucide-react';
 
 const ReviewCard = ({ review }) => {

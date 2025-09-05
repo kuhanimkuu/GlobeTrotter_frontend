@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -40,9 +39,9 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">Contact Us</h4>
             <div className="space-y-2 text-gray-400">
-              <p>📞 +1 (555) 123-4567</p>
+              <p>📞 +254 799 626 531</p>
               <p>✉️ info@globetrotter.com</p>
-              <p>📍 123 Travel Street, Adventure City</p>
+              <p>📍 Moi Avenue, Nairobi, Kenya</p>
             </div>
           </div>
         </div>

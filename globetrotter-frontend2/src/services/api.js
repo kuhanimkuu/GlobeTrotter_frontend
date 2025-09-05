@@ -1,4 +1,3 @@
-// src/services/api.js
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 export const api = {
@@ -30,7 +29,7 @@ export const api = {
     return text ? JSON.parse(text) : {};
   },
 
-  // 🔐 Auth
+  //  Auth
   auth: {
     login: (credentials) => api.request('/users/auth/token/', {
       method: 'POST',
@@ -46,10 +45,10 @@ export const api = {
       body: JSON.stringify({ refresh: refreshToken }),
     }),
     logoutSession: () => api.request('/users/auth/logout/', { method: 'POST' }),
-    listUsers: () => api.request('/users/list/'), // admin-only
+    listUsers: () => api.request('/users/list/'), 
   },
 
-  // 📖 Catalog
+  //  Catalog
   catalog: {
     getPackages: () => api.request('/catalog/packages/'),
     getPackage: (id) => api.request(`/catalog/packages/${id}/`),
@@ -72,7 +71,7 @@ export const api = {
     }),
   },
 
-  // 🏨 Inventory (Hotels, Cars, Room Types)
+  //  Inventory (Hotels, Cars, Room Types)
   inventory: {
     getHotels: () => api.request('/inventory/hotels/'),
     getHotel: (id) => api.request(`/inventory/hotels/${id}/`),
@@ -101,7 +100,7 @@ export const api = {
     deleteCar: (id) => api.request(`/inventory/cars/${id}/`, { method: 'DELETE' }),
   },
 
-  // 📅 Booking
+  //  Booking
   booking: {
     create: (data) => api.request('/booking/bookings/', {
       method: 'POST',
@@ -116,7 +115,7 @@ export const api = {
     cancel: (id) => api.request(`/booking/bookings/${id}/cancel/`, { method: 'POST' }),
   },
 
-  // 💳 Payments
+  // Payments
   payments: {
     create: (payload) => api.request('/payments/create/', {
       method: 'POST',
@@ -128,7 +127,7 @@ export const api = {
     }),
   },
 
-  // ⭐ Reviews
+  // Reviews
   reviews: {
     list: () => api.request('/reviews/reviews/'),
     create: (payload) => api.request('/reviews/reviews/', {
@@ -137,7 +136,7 @@ export const api = {
     }),
   },
 
-  // ✈️ Flights
+  //  Flights
   flights: {
     search: (params) => api.request('/flights/search/', {
       method: 'POST',
@@ -146,7 +145,7 @@ export const api = {
     getOffers: (id) => api.request(`/flights/offers/${id}/`),
   },
 
-  // 🛡️ Role-based shortcuts
+  //  Role-based shortcuts
   admin: {
     createDestination: (payload) => api.catalog.createDestination(payload),
     createHotel: (payload) => api.inventory.createHotel(payload),

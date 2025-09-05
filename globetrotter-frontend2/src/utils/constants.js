@@ -1,7 +1,7 @@
 // User roles
 export const USER_ROLES = {
   ADMIN: 'ADMIN',
-  ORGANIZER: 'AGENT', // Your backend uses 'AGENT' for organizers
+  ORGANIZER: 'AGENT', 
   CUSTOMER: 'CUSTOMER',
 };
 
@@ -24,7 +24,7 @@ export const CURRENCIES = {
   USD: 'USD',
   EUR: 'EUR',
   GBP: 'GBP',
-  KES: 'KES', // Kenyan Shilling
+  KES: 'KES',
 };
 
 // Duration options

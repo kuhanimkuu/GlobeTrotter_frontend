@@ -1,4 +1,3 @@
-// src/components/cards/CarCard.jsx
 import { Car, MapPin, Users, Fuel } from 'lucide-react';
 
 const CarCard = ({ car }) => {

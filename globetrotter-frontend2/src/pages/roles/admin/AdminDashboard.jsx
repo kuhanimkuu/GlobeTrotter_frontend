@@ -1,4 +1,3 @@
-// src/pages/roles/AdminDashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { api } from '../../../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -28,7 +27,7 @@ const AdminDashboard = () => {
     address: '',
     city: '',
     country: '',
-    destination: '', // destination id
+    destination: '', 
     description: '',
   });
   const [carForm, setCarForm] = useState({

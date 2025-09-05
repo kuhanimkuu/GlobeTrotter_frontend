@@ -1,4 +1,3 @@
-// src/utils/format.js
 export const format = {
   currency: (amount, currency = 'USD') => {
     if (amount == null) return 'N/A';

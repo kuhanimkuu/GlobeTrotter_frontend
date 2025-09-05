@@ -1,4 +1,3 @@
-// src/contexts/AuthProvider.jsx
 import { useState, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import { api } from '../services/api';
@@ -35,13 +34,12 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await api.auth.login(credentials);
       
-      // Django REST Framework returns access/refresh tokens
       if (data.access) {
         localStorage.setItem('accessToken', data.access);
         localStorage.setItem('refreshToken', data.refresh);
         setToken(data.access);
         
-        // Get user profile after successful login
+       
         const userData = await api.auth.getProfile();
         setUser(userData);
         

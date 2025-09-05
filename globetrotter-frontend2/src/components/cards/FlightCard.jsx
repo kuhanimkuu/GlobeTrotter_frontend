@@ -1,5 +1,3 @@
-// src/components/cards/FlightCard.jsx
-// src/components/cards/flightcard.jsx
 import React from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { useNavigate } from 'react-router-dom';

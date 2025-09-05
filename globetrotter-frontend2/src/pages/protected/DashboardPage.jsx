@@ -1,4 +1,3 @@
-// src/pages/protected/dashboardpage.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/useAuth';
 import { api } from '../../services/api';

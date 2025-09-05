@@ -1,4 +1,3 @@
-// src/pages/booking-flow/receiptpage.jsx
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { format } from '../../utils/format';

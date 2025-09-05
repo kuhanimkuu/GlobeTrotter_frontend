@@ -1,4 +1,3 @@
-// src/components/cards/HotelCard.jsx
 import { Star, MapPin, Wifi, Car, Utensils } from 'lucide-react';
 
 const HotelCard = ({ hotel }) => {

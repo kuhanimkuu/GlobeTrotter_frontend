@@ -1,4 +1,3 @@
-// API response transformers
 export const transformTourPackage = (apiData) => {
   return {
     id: apiData.id,

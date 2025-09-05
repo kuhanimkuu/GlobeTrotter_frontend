@@ -1,4 +1,3 @@
-// src/components/cards/DestinationCard.jsx
 import { Link } from 'react-router-dom';
 import { MapPin, Star } from 'lucide-react';
 
