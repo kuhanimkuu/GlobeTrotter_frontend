@@ -1,19 +1,17 @@
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 export const api = {
-  // Core request handler
+  
   async request(endpoint, options = {}) {
     let token = localStorage.getItem('token');
     const url = `${API_BASE}${endpoint}`;
 
     const headers = { ...options.headers };
 
-    // Only set JSON Content-Type if body is NOT FormData
     if (!(options.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
     }
 
-    // Attach Bearer token if available
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -23,7 +21,6 @@ export const api = {
       ...options,
     });
 
-    // Handle expired token → auto refresh
     if (response.status === 401) {
       const refreshToken = localStorage.getItem('refresh');
       if (refreshToken) {
@@ -37,8 +34,6 @@ export const api = {
           if (refreshResponse.ok) {
             const data = await refreshResponse.json();
             localStorage.setItem('token', data.access);
-
-            // retry original request with new token
             headers['Authorization'] = `Bearer ${data.access}`;
             response = await fetch(url, { headers, ...options });
           } else {
@@ -57,6 +52,7 @@ export const api = {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+       console.error("Booking API error:", errorData);
       throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
     }
 
@@ -66,7 +62,7 @@ export const api = {
 
   // Auth
   auth: {
-    // 🔹 Login
+    //  Login
     login: async (credentials) => {
       const data = await api.request('/users/auth/token/', {
         method: 'POST',
@@ -81,16 +77,16 @@ export const api = {
       return data;
     },
 
-    // 🔹 Register
+    //  Register
     register: (userData) => api.request('/users/auth/register/', {
       method: 'POST',
       body: JSON.stringify(userData),
     }),
 
-    // 🔹 Get logged-in profile
+    //  Get logged-in profile
     getProfile: () => api.request('/users/auth/me/'),
 
-    // 🔹 Refresh token manually
+    //  Refresh token manually
     refresh: async () => {
       const refreshToken = localStorage.getItem('refresh');
       if (!refreshToken) throw new Error('No refresh token available');
@@ -107,14 +103,13 @@ export const api = {
       return data;
     },
 
-    // 🔹 Logout
+    //  Logout
     logoutSession: () => {
       localStorage.removeItem('token');
       localStorage.removeItem('refresh');
       window.location.href = '/login';
     },
 
-    // 🔹 Admin: list all users
     listUsers: () => api.request('/users/list/'),
   },
 
@@ -126,25 +121,37 @@ export const api = {
     getDestination: (id) => api.request(`/catalog/destinations/${id}/`),
 
     createDestination: (payload) => api.request('/catalog/destinations/', {
-  method: 'POST',
-  body: payload instanceof FormData ? payload : JSON.stringify(payload),
-}),
+      method: 'POST',
+      body: payload instanceof FormData ? payload : JSON.stringify(payload),
+    }),
 
-updateDestination: (id, payload) => api.request(`/catalog/destinations/${id}/`, {
-  method: 'PUT',
-  body: payload instanceof FormData ? payload : JSON.stringify(payload),
-}),
+    updateDestination: (id, payload) => api.request(`/catalog/destinations/${id}/`, {
+      method: 'PUT',
+      body: payload instanceof FormData ? payload : JSON.stringify(payload),
+    }),
     deleteDestination: (id) => api.request(`/catalog/destinations/${id}/`, { method: 'DELETE' }),
 
-    createPackage: (payload) => api.request('/catalog/packages/', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-    updatePackage: (id, payload) => api.request(`/catalog/packages/${id}/`, {
-      method: 'PUT',
-      body: JSON.stringify(payload),
-    }),
-    deletePackage: (id) => api.request(`/catalog/packages/${id}/`, { method: 'DELETE' }),
+    createPackage: (payload) =>
+      api.request('/catalog/packages/', {
+        method: 'POST',
+        body: payload instanceof FormData ? payload : JSON.stringify(payload),
+      }),
+
+    updatePackage: (id, payload) =>
+      api.request(`/catalog/packages/${id}/`, {
+        method: 'PUT',
+        body: payload instanceof FormData ? payload : JSON.stringify(payload),
+      }),
+
+    deletePackage: (id, payload = null) =>
+      api.request(`/catalog/packages/${id}/`, {
+        method: 'DELETE',
+        body: payload
+          ? payload instanceof FormData
+            ? payload
+            : JSON.stringify(payload)
+          : undefined,
+      }),
   },
   getPackageImages: (packageId) => jsonRequest(`/catalog/package-images/?package=${packageId}`),
   addPackageImage: (payload) => uploadRequest('/catalog/package-images/', payload, 'POST'),
@@ -152,106 +159,197 @@ updateDestination: (id, payload) => api.request(`/catalog/destinations/${id}/`, 
   deletePackageImage: (id) => jsonRequest(`/catalog/package-images/${id}/`, { method: 'DELETE' }),
 
   // Inventory
-  // Inventory
-inventory: {
-  // Hotels
-  getHotels: () => api.request('/inventory/hotels/'),
-  getHotel: (id) => api.request(`/inventory/hotels/${id}/`),
-  getRoomTypes: (hotelId) => api.request(`/inventory/hotels/${hotelId}/room-types/`),
-  getCars: () => api.request('/inventory/cars/'),
-  getCar: (id) => api.request(`/inventory/cars/${id}/`),
+  inventory: {
+    // Hotels
+    getHotels: () => api.request('/inventory/hotels/'),
+    getHotel: (id) => api.request(`/inventory/hotels/${id}/`),
+    searchHotels: (filters) =>
+      api.request('/inventory/hotels/search/', {
+        method: 'POST',
+        body: JSON.stringify(filters),
+      }),
 
-  createHotel: (payload) => api.request('/inventory/hotels/', {
-    method: 'POST',
-    body: payload, // can be FormData or JSON
-  }),
+    getRoomTypes: (hotelId) => api.request(`/inventory/hotels/${hotelId}/room-types/`),
+    getCars: () => api.request('/inventory/cars/'),
+    getCar: (id) => api.request(`/inventory/cars/${id}/`),
+    searchCars: (filters) =>
+      api.request('/inventory/cars/search/', {
+        method: 'POST',
+        body: JSON.stringify(filters),
+      }),
+    createHotel: (payload) => api.request('/inventory/hotels/', {
+      method: 'POST',
+      body: payload, 
+    }),
 
-  updateHotel: (id, payload) => api.request(`/inventory/hotels/${id}/`, {
-    method: 'PUT',
-    body: payload,
-  }),
+    updateHotel: (id, payload) => api.request(`/inventory/hotels/${id}/`, {
+      method: 'PUT',
+      body: payload,
+    }),
 
-  deleteHotel: (id) => api.request(`/inventory/hotels/${id}/`, { method: 'DELETE' }),
+    deleteHotel: (id) => api.request(`/inventory/hotels/${id}/`, { method: 'DELETE' }),
 
-  // Room Types
-  createRoomType: (payload) => api.request('/inventory/room-types/', {
-    method: 'POST',
-    body: payload,
-  }),
+    // Room Types
+    createRoomType: (payload) => api.request('/inventory/room-types/', {
+      method: 'POST',
+      body: payload,
+    }),
 
-  updateRoomType: (id, payload) => api.request(`/inventory/room-types/${id}/`, {
-    method: 'PUT',
-    body: payload,
-  }),
+    updateRoomType: (id, payload) => api.request(`/inventory/room-types/${id}/`, {
+      method: 'PUT',
+      body: payload,
+    }),
 
-  deleteRoomType: (id) => api.request(`/inventory/room-types/${id}/`, { method: 'DELETE' }),
+    deleteRoomType: (id) => api.request(`/inventory/room-types/${id}/`, { method: 'DELETE' }),
 
-  // Cars
-createCar: (payload) => api.request('/inventory/cars/', {
-    method: 'POST',
-    body: payload instanceof FormData ? payload : JSON.stringify(payload),
-  }),
+    // Cars
+    createCar: (payload) => api.request('/inventory/cars/', {
+      method: 'POST',
+      body: payload instanceof FormData ? payload : JSON.stringify(payload),
+    }),
 
-  updateCar: (id, payload) => api.request(`/inventory/cars/${id}/`, {
-    method: 'PUT',
-    body: payload instanceof FormData ? payload : JSON.stringify(payload),
-  }),
+    updateCar: (id, payload) => api.request(`/inventory/cars/${id}/`, {
+      method: 'PUT',
+      body: payload instanceof FormData ? payload : JSON.stringify(payload),
+    }),
 
-  deleteCar: (id) => api.request(`/inventory/cars/${id}/`, { method: 'DELETE' }),
-},
+    deleteCar: (id) => api.request(`/inventory/cars/${id}/`, { method: 'DELETE' }),
+  },
 
   // Booking
-  booking: {
-    create: (data) => api.request('/booking/bookings/', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    }),
-    list: () => api.request('/booking/bookings/'),
-    listMine: (status = null) => {
-      const params = status ? `?status=${status}` : '';
-      return api.request(`/booking/bookings/mine/${params}`);
-    },
-    get: (id) => api.request(`/booking/bookings/${id}/`),
-    cancel: (id) => api.request(`/booking/bookings/${id}/cancel/`, { method: 'POST' }),
+booking: {
+  // Generic booking 
+  create: (data) => api.request('/booking/bookings/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+
+  // Individual bookings
+  flight: (data) => api.request('/booking/bookings/flight/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+
+  hotel: (data) => api.request('/booking/bookings/hotel/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+
+  car: (data) => api.request('/booking/bookings/car/', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+
+  // List all bookings
+  list: () => api.request('/booking/bookings/'),
+
+  // List current user's bookings 
+  listMine: (status = null) => {
+    const params = status ? `?status=${status}` : '';
+    return api.request(`/booking/bookings/mine/${params}`);
   },
+
+  // Get booking by ID
+  get: (id) => api.request(`/booking/bookings/${id}/`),
+
+  // Cancel booking by ID
+  cancel: (id) => api.request(`/booking/bookings/${id}/cancel/`, { method: 'POST' }),
+  allFlights: () => api.request('/booking/flight-search/', {
+    method: 'GET',
+  }),
+
+
+},
 
   // Payments
-  payments: {
-    create: (payload) => api.request('/payments/create/', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-    charge: (payload) => api.request('/payments/charge/', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    }),
-  },
-
-  // Reviews
- reviews: {
-  list: ({ content_type, object_id } = {}) => {
-    let query = '';
-    if (content_type && object_id) {
-      query = `?content_type=${content_type}&object_id=${object_id}`;
-    }
-    return api.request(`/reviews/reviews/${query}`);
-  },
-  create: (payload) => api.request('/reviews/reviews/', {
+payments: {
+  // Create a payment
+  create: (payload) => api.request('/payments/payments/', {
     method: 'POST',
     body: JSON.stringify(payload),
   }),
+
+  // Direct charge 
+  charge: (payload) => api.request('/payments/payments/charge/', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+
+  // Refund request
+  refundRequest: (paymentId, payload) => api.request(`/payments/payments/${paymentId}/refund-request/`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  refundAction: (refundId, action) => api.request(`/payments/refunds/${refundId}/${action}/`, {
+    method: 'PUT',
+  }),
 },
+
+  // Reviews
+  reviews: {
+    list: async ({ content_type, object_id } = {}) => {
+      let query = '';
+      if (content_type && object_id) {
+        const ct = content_type.includes('.') ? content_type : `inventory.${content_type}`;
+        query = `?content_type=${ct}&object_id=${object_id}`;
+      }
+
+      const response = await api.request(`/reviews/reviews/${query}`);
+      console.log(">>> API reviews response:", response);
+      const approved = response.filter(r => r.is_approved);
+      console.log(">>> Approved reviews only:", approved);
+
+      return approved;
+    },
+
+    create: async (payload) => {
+      const ct = payload.content_type.includes('.')
+        ? payload.content_type
+        : `inventory.${payload.content_type}`;
+
+      const response = await api.request('/reviews/reviews/', {
+        method: 'POST',
+        body: JSON.stringify({ ...payload, content_type: ct }),
+      });
+
+      console.log(">>> Created review response:", response);
+      return response;
+    },
+  },
 
   // Flights
   flights: {
-    search: (params) => api.request('/flights/search/', {
-      method: 'POST',
-      body: JSON.stringify(params),
-    }),
-    getOffers: (id) => api.request(`/flights/offers/${id}/`),
+   
+    search: (params) => {
+     
+      const cleanParams = Object.fromEntries(
+        Object.entries({
+          origin: params.origin,
+          destination: params.destination,
+          departure_date: params.departure_date,
+          passengers: params.passengers || 1,
+          provider: 'fake',       
+          force_refresh: true,    
+        }).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+      );
+
+      return api.request('/inventory/flights/search/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cleanParams),
+      });
+    },
+
+ 
+    getOffer: (id) =>
+      api.request(`/inventory/flights/${id}/`, {
+        method: 'GET',
+      }),
   },
 
-  // Role-based shortcuts
+
   admin: {
     createDestination: (payload) => api.catalog.createDestination(payload),
     createHotel: (payload) => api.inventory.createHotel(payload),
@@ -269,4 +367,25 @@ createCar: (payload) => api.request('/inventory/cars/', {
     myBookings: () => api.booking.listMine(),
     book: (payload) => api.booking.create(payload),
   },
+  maps: {
+  geocode: async ({ query }) => {
+    const url = `${API_BASE}/maps/geocode/?query=${encodeURIComponent(query)}`;
+    const res = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+      },
+    });
+    if (!res.ok) throw new Error('Failed to fetch geocode');
+    return res.json();
+  },
+  reverseGeocode: async ({ lat, lng }) => {
+    const url = `${API_BASE}/maps/reverse-geocode/?lat=${lat}&lng=${lng}`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token') || ''}` },
+    });
+    if (!res.ok) throw new Error('Failed to reverse geocode');
+    return res.json();
+  },
+},
 };

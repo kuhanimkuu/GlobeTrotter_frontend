@@ -1,13 +1,14 @@
 import { Star, MapPin, Wifi, Car, Utensils } from 'lucide-react';
 
 const HotelCard = ({ hotel, onView }) => {
+  console.log('HotelCard data:', hotel); 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {/* Hotel Image */}
       <div className="h-48 bg-gray-200 relative">
-        {hotel.cover_image_url ? (
+        {hotel.image ? (
           <img
-            src={hotel.cover_image_url}
+            src={hotel.image}
             alt={hotel.name}
             className="w-full h-full object-cover"
           />
@@ -66,7 +67,7 @@ const HotelCard = ({ hotel, onView }) => {
 
         {/* VIEW HOTEL BUTTON */}
         <button
-          onClick={onView} // <-- Add this line
+          onClick={onView}
           className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
         >
           View Hotel

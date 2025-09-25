@@ -8,12 +8,12 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if we have a token on app load
+ 
     const initAuth = async () => {
       const storedToken = localStorage.getItem('accessToken');
       if (storedToken) {
         try {
-          // Verify token is still valid and get user profile
+   
           const userData = await api.auth.getProfile();
           setUser(userData);
           setToken(storedToken);
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
   refreshToken,
   isAuthenticated: !!token,
   isAdmin: user?.is_staff || user?.role?.toLowerCase() === 'admin',
-  isOrganizer: user?.role?.toLowerCase() === 'agent', // AGENT = Organizer
+  isOrganizer: user?.role?.toLowerCase() === 'agent', 
   isCustomer: !user?.is_staff && (!user?.role || user?.role?.toLowerCase() === 'customer'),
 };
   return (

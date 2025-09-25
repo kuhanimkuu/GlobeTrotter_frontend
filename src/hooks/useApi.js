@@ -64,7 +64,7 @@ export const useOrganizerPackages = (options = {}) => {
   });
 };
 
-// Create Package Mutation (Organizer)
+// Create Package 
 export const useCreatePackage = () => {
   const { token } = useAuth();
   const queryClient = useQueryClient();

@@ -1,4 +1,3 @@
-// src/pages/dashboard/admin/ManageCarsPage.jsx
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -35,7 +34,6 @@ const ManageCarsPage = () => {
     mutationFn: async (carData) => {
       let destId = carData.destination_id;
 
-      // Fallback: use city to find or create destination
       if (!destId && carData.city) {
         const existing = destinations.find(
           (d) => d.name.toLowerCase() === carData.city.toLowerCase()
@@ -48,7 +46,6 @@ const ManageCarsPage = () => {
         }
       }
 
-      // FormData for the car
       const formData = new FormData();
       formData.append("make", carData.make);
       formData.append("model", carData.model);
@@ -58,7 +55,8 @@ const ManageCarsPage = () => {
       formData.append("description", carData.description);
       if (destId) formData.append("destination_id", destId);
       if (carImage) formData.append("carimage", carImage);
-
+      if (carData.driver_name) formData.append("driver_name", carData.driver_name);
+if (carData.driver_contact) formData.append("driver_contact", carData.driver_contact);
       return carData.id
         ? api.inventory.updateCar(carData.id, formData)
         : api.inventory.createCar(formData);
@@ -288,8 +286,6 @@ const ManageCarsPage = () => {
     </div>
   </li>
 ))}
-
-
       </ul>
     </div>
   );

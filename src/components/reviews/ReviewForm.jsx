@@ -20,19 +20,19 @@ const ReviewForm = ({ type, objectId, onSuccess }) => {
 
     try {
       await api.reviews.create({
-        content_type: type.toLowerCase(), // ensure lowercase for backend
+        content_type: type.toLowerCase(), 
         object_id: objectId,
         rating,
         title,
         body,
       });
 
-      // Reset form
+
       setRating(5);
       setTitle("");
       setBody("");
 
-      // Callback to refresh review list
+     
       onSuccess?.();
     } catch (err) {
       console.error("Review submit error:", err);

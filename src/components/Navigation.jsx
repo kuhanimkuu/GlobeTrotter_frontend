@@ -83,12 +83,7 @@ const Navigation = () => {
                 >
                   Login
                 </Link>
-                <Link
-                  to="/register"
-                  className="border border-blue-500 text-blue-500 px-4 py-2 rounded hover:bg-blue-50"
-                >
-                  Register
-                </Link>
+                
               </div>
             )}
           </div>

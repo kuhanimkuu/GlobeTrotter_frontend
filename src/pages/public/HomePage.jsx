@@ -8,7 +8,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-20">
+      <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-gray-500 py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Discover Your Next Adventure</h1>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

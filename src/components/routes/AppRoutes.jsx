@@ -27,7 +27,9 @@ import TourPackagesPage from "../../pages/public/TourPackagesPage";
 import BookingWizardPage from "../../pages/booking-flow/BookingWizardPage";
 import PaymentPage from "../../pages/booking-flow/PaymentPage";
 import ReceiptPage from "../../pages/booking-flow/ReceiptPage";
-
+import CarBookingWizardPage from "../../pages/booking-flow/CarBookingWizardPage";
+import HotelBookingWizardPage from "../../pages/booking-flow/HotelBookingWizardPage";
+import FlightsBookingWizardPage from "../../pages/booking-flow/FlightsBookingWizardPage";
 // =========================
 // Protected user pages
 // =========================
@@ -76,6 +78,9 @@ const AppRoutes = () => {
 
         {/* Booking flow */}
         <Route path="booking-wizard" element={<BookingWizardPage />} />
+        <Route path="cars-booking-wizard" element={<CarBookingWizardPage />} />
+        <Route path="hotels-booking-wizard" element={<HotelBookingWizardPage />} />
+        <Route path="flights-booking-wizard" element={<FlightsBookingWizardPage />} />
         <Route path="payment" element={<PaymentPage />} />
         <Route path="receipt" element={<ReceiptPage />} />
 

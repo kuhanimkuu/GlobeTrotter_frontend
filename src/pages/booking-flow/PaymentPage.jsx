@@ -14,8 +14,8 @@ const PaymentPage = () => {
   const [error, setError] = useState('');
 
   const booking = state?.booking;
-  const amount = state?.amount || booking?.total;
-  const currency = state?.currency || booking?.currency || 'USD';
+ const amount = state?.amount !== undefined ? state.amount : (booking?.total ? parseFloat(booking.total) : 0);
+const currency = state?.currency || booking?.currency || 'USD';
 
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardDetails, setCardDetails] = useState({
@@ -33,33 +33,40 @@ const PaymentPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  e.preventDefault();
+  setLoading(true);
+  setError('');
 
-    try {
-      const paymentResult = await api.payment.process({
-        amount: parseFloat(amount),
-        currency,
-        payment_method: paymentMethod,
-        card_details: paymentMethod === 'card' ? cardDetails : null,
-        booking_id: booking?.id,
-      });
+  try {
+    if (!booking?.id) throw new Error('Booking data is missing');
 
-      navigate('/booking-flow/receipt', {
-        state: {
-          booking,
-          payment: paymentResult,
-        },
-      });
-    } catch (err) {
-      setError(err.message || 'Payment processing failed');
-    } finally {
-      setLoading(false);
-    }
-  };
+        const paymentPayload = {
+      booking_id: booking.id,
+      gateway: 'fake', 
+      idempotency_key: `booking-${booking.id}-${Date.now()}`,
+      return_urls: {
+        success: 'https://yourfrontend.com/success',
+        failure: 'https://yourfrontend.com/failure',
+      },
+      payment_method: paymentMethod,
+      amount,
+      currency,
+      metadata: { note: booking.note || 'Payment for hotel booking' },
+    };
 
-  if (!booking || !amount) {
+    const paymentResult = await api.payments.create(paymentPayload);
+
+    navigate('/receipt', {
+      state: { booking, payment: paymentResult },
+    });
+  } catch (err) {
+    setError(err.message || 'Payment processing failed');
+  } finally {
+    setLoading(false);
+  }
+};
+
+  if (!booking || !booking.id || !amount) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">

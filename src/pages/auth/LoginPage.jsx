@@ -15,7 +15,7 @@ const LoginPage = () => {
       password: ''
     },
     async (formValues) => {
-      //  Validate required fields
+    
       const requiredFields = ['username', 'password'];
       for (let field of requiredFields) {
         const errorMsg = validateRequired(formValues[field], field);

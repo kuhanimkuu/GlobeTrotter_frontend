@@ -15,14 +15,13 @@ const OrganizerDashboard = () => {
     description: ''
   });
 
-  // Fetch organizer's packages
+
   const { data: packages, isLoading } = useQuery({
     queryKey: ['organizer-packages'],
     queryFn: () => api.organizer.getPackages(token),
     enabled: !!token
   });
 
-  // Create package mutation
   const createMutation = useMutation({
     mutationFn: (packageData) => api.organizer.createPackage(packageData, token),
     onSuccess: () => {

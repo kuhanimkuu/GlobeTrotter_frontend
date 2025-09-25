@@ -1,4 +1,3 @@
-// src/pages/dashboard/admin/ManageHotelsPage.jsx
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { api } from "../../../services/api";
@@ -14,6 +13,7 @@ const ManageHotelsPage = () => {
     country: "",
     destination: "",
     description: "",
+    rating: "",
   });
   const [hotelImage, setHotelImage] = useState(null);
   const [destinations, setDestinations] = useState([]);
@@ -27,7 +27,7 @@ const ManageHotelsPage = () => {
     queryFn: api.inventory.getHotels,
   });
 
-  // HOTEL MUTATIONS
+ 
   const saveHotel = useMutation({
     mutationFn: (hotelData) => {
       const formData = new FormData();
@@ -36,6 +36,7 @@ const ManageHotelsPage = () => {
       formData.append("city", hotelData.city);
       formData.append("country", hotelData.country);
       formData.append("description", hotelData.description);
+      formData.append("rating", hotelData.rating || "");
 
       const destinationValue = hotelData.destination || hotelData.city;
       formData.append("destination", destinationValue);
@@ -48,7 +49,16 @@ const ManageHotelsPage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["admin-hotels"]);
-      setNewHotel({ id: null, name: "", address: "", city: "", country: "", destination: "", description: "" });
+      setNewHotel({
+        id: null,
+        name: "",
+        address: "",
+        city: "",
+        country: "",
+        destination: "",
+        description: "",
+        rating: "",
+      });
       setHotelImage(null);
     },
   });
@@ -123,6 +133,16 @@ const ManageHotelsPage = () => {
           onChange={(e) => setNewHotel({ ...newHotel, country: e.target.value })}
           className="border px-3 py-2 rounded"
         />
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          max="5"
+          placeholder="Rating (0-5)"
+          value={newHotel.rating}
+          onChange={(e) => setNewHotel({ ...newHotel, rating: e.target.value })}
+          className="border px-3 py-2 rounded"
+        />
         <select
           value={newHotel.destination}
           onChange={(e) => setNewHotel({ ...newHotel, destination: e.target.value })}
@@ -153,15 +173,22 @@ const ManageHotelsPage = () => {
       {/* Hotels List */}
       <div className="space-y-4">
         {hotels?.map((hotel) => (
-          <HotelCard key={hotel.id} hotel={hotel} destinations={destinations} queryClient={queryClient} deleteHotel={deleteHotel} />
+          <HotelCard
+            key={hotel.id}
+            hotel={hotel}
+            destinations={destinations}
+            queryClient={queryClient}
+            deleteHotel={deleteHotel}
+            setNewHotel={setNewHotel}
+            setHotelImage={setHotelImage}
+          />
         ))}
       </div>
     </div>
   );
 };
 
-const HotelCard = ({ hotel, destinations, queryClient, deleteHotel }) => {
-  const [hotelImage, setHotelImage] = useState(null);
+const HotelCard = ({ hotel, destinations, queryClient, deleteHotel, setNewHotel, setHotelImage }) => {
   const [roomTypeForm, setRoomTypeForm] = useState({
     id: null,
     name: "",
@@ -173,7 +200,6 @@ const HotelCard = ({ hotel, destinations, queryClient, deleteHotel }) => {
   const [roomImage, setRoomImage] = useState(null);
   const [editingRoomId, setEditingRoomId] = useState(null);
 
-  // ROOMTYPE MUTATIONS
   const addRoomType = useMutation({
     mutationFn: (data) => {
       const formData = new FormData();
@@ -201,11 +227,24 @@ const HotelCard = ({ hotel, destinations, queryClient, deleteHotel }) => {
     onSuccess: () => queryClient.invalidateQueries(["admin-hotels"]),
   });
 
-  // HOTEL DELETE
   const handleDeleteHotel = (id) => {
     if (window.confirm("Are you sure you want to delete this hotel? This action cannot be undone.")) {
       deleteHotel.mutate(id);
     }
+  };
+
+  const handleEditHotel = () => {
+    setNewHotel({
+      id: hotel.id,
+      name: hotel.name,
+      address: hotel.address,
+      city: hotel.city,
+      country: hotel.country,
+      destination: hotel.destination,
+      description: hotel.description,
+      rating: hotel.rating,
+    });
+    setHotelImage(null);
   };
 
   return (
@@ -215,88 +254,108 @@ const HotelCard = ({ hotel, destinations, queryClient, deleteHotel }) => {
           {hotel.cover_image_url && (
             <img src={hotel.cover_image_url} alt={hotel.name} className="w-16 h-16 object-cover rounded" />
           )}
-          <span className="font-medium">{hotel.name} – {hotel.city}, {hotel.country}</span>
+          <span className="font-medium">
+            {hotel.name} – {hotel.city}, {hotel.country} – ⭐ {hotel.rating || "N/A"}
+          </span>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => setRoomTypeForm({ id: null, name: "", capacity: 2, base_price: "", currency: "USD", quantity: 1 })} className="bg-green-500 text-white px-3 py-1 rounded">
-            New Room Type
-          </button>
+          <button onClick={handleEditHotel} className="bg-yellow-500 text-white px-3 py-1 rounded">Edit Hotel</button>
           <button onClick={() => handleDeleteHotel(hotel.id)} className="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
         </div>
       </div>
 
       {/* RoomType Form */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          addRoomType.mutate(roomTypeForm);
-        }}
-        className="grid grid-cols-2 gap-2 border-t pt-2 mt-2"
-      >
-        <input
-          type="text"
-          placeholder="Room Type Name"
-          value={roomTypeForm.name}
-          onChange={(e) => setRoomTypeForm({ ...roomTypeForm, name: e.target.value })}
-          className="border px-2 py-1 rounded"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Capacity"
-          value={roomTypeForm.capacity}
-          onChange={(e) => setRoomTypeForm({ ...roomTypeForm, capacity: e.target.value })}
-          className="border px-2 py-1 rounded"
-          min={1}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Base Price"
-          value={roomTypeForm.base_price}
-          onChange={(e) => setRoomTypeForm({ ...roomTypeForm, base_price: e.target.value })}
-          className="border px-2 py-1 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Currency"
-          value={roomTypeForm.currency}
-          onChange={(e) => setRoomTypeForm({ ...roomTypeForm, currency: e.target.value })}
-          className="border px-2 py-1 rounded"
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={roomTypeForm.quantity}
-          onChange={(e) => setRoomTypeForm({ ...roomTypeForm, quantity: e.target.value })}
-          className="border px-2 py-1 rounded"
-          min={1}
-          required
-        />
+<form
+  onSubmit={(e) => {
+    e.preventDefault();
+    addRoomType.mutate(roomTypeForm);
+  }}
+  className="grid grid-cols-2 gap-2 border-t pt-2 mt-2"
+>
+  <div className="flex flex-col">
+    <label className="text-sm font-medium mb-1">Room Type Name</label>
+    <input
+      type="text"
+      placeholder="Room Type Name"
+      value={roomTypeForm.name}
+      onChange={(e) => setRoomTypeForm({ ...roomTypeForm, name: e.target.value })}
+      className="border px-2 py-1 rounded"
+      required
+    />
+  </div>
 
-        {/* Room Image Upload */}
-        <div className="col-span-2">
-          <label className="flex flex-col border px-2 py-1 rounded cursor-pointer text-gray-600 hover:bg-gray-100">
-            {roomImage ? roomImage.name : "Select room image..."}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setRoomImage(e.target.files[0])}
-              className="hidden"
-            />
-          </label>
-        </div>
+  <div className="flex flex-col">
+    <label className="text-sm font-medium mb-1">Capacity (pax)</label>
+    <input
+      type="number"
+      placeholder="Capacity"
+      value={roomTypeForm.capacity}
+      onChange={(e) => setRoomTypeForm({ ...roomTypeForm, capacity: e.target.value })}
+      className="border px-2 py-1 rounded"
+      min={1}
+      required
+    />
+  </div>
 
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded col-span-2"
-        >
-          {editingRoomId ? "Update Room Type" : "Add Room Type"}
-        </button>
-      </form>
+  <div className="flex flex-col">
+    <label className="text-sm font-medium mb-1">Base Price</label>
+    <input
+      type="number"
+      placeholder="Base Price"
+      value={roomTypeForm.base_price}
+      onChange={(e) => setRoomTypeForm({ ...roomTypeForm, base_price: e.target.value })}
+      className="border px-2 py-1 rounded"
+      required
+    />
+  </div>
 
-      {/* Existing Room Types */}
+  <div className="flex flex-col">
+    <label className="text-sm font-medium mb-1">Currency</label>
+    <input
+      type="text"
+      placeholder="Currency"
+      value={roomTypeForm.currency}
+      onChange={(e) => setRoomTypeForm({ ...roomTypeForm, currency: e.target.value })}
+      className="border px-2 py-1 rounded"
+    />
+  </div>
+
+  <div className="flex flex-col">
+    <label className="text-sm font-medium mb-1">Quantity</label>
+    <input
+      type="number"
+      placeholder="Quantity"
+      value={roomTypeForm.quantity}
+      onChange={(e) => setRoomTypeForm({ ...roomTypeForm, quantity: e.target.value })}
+      className="border px-2 py-1 rounded"
+      min={1}
+      required
+    />
+  </div>
+
+  <div className="col-span-2 flex flex-col">
+    <label className="text-sm font-medium mb-1">Room Image</label>
+    <label className="flex flex-col border px-2 py-1 rounded cursor-pointer text-gray-600 hover:bg-gray-100">
+      {roomImage ? roomImage.name : "Select room image..."}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setRoomImage(e.target.files[0])}
+        className="hidden"
+      />
+    </label>
+  </div>
+
+  <button
+    type="submit"
+    className="bg-green-600 text-white px-4 py-2 rounded col-span-2"
+  >
+    {roomTypeForm.id ? "Update Room Type" : "Add Room Type"}
+  </button>
+</form>
+
+
+      {/* Existing Room Types  */}
       <div className="mt-4 space-y-2">
         {hotel.room_types?.map((room) => (
           <div key={room.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">

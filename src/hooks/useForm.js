@@ -11,7 +11,7 @@ export const useForm = (initialValues, onSubmit) => {
     
     setValues(prev => ({ ...prev, [name]: inputValue }));
     
-    // Clear error when user starts typing
+    
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }

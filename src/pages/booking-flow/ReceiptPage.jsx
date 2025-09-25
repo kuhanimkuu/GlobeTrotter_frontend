@@ -23,7 +23,6 @@ const ReceiptPage = () => {
   };
 
   const handleDownload = () => {
-    // Implement PDF download functionality
     alert('PDF download functionality would be implemented here');
   };
 

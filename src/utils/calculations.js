@@ -38,7 +38,7 @@ export const calculateAvailableSlots = (totalSlots, bookedSlots) => {
   return Math.max(0, totalSlots - bookedSlots);
 };
 
-// Tax calculations (example: 8% tax)
+// Tax calculations
 export const calculateTax = (amount, taxRate = 8) => {
   return amount * (taxRate / 100);
 };

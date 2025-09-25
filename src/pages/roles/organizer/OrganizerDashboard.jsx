@@ -4,16 +4,32 @@ import { api } from "../../../services/api";
 import { format } from "../../../utils/format";
 import { useAuth } from "../../../contexts/useAuth";
 
+import TourPackageModal from "../../../components/TourPackageModal";
 const OrganizerDashboard = () => {
   const { user } = useAuth();
+
   const [stats, setStats] = useState({
     totalPackages: 0,
     activeBookings: 0,
     totalRevenue: 0,
     averageRating: 0,
   });
+
+  const [packages, setPackages] = useState([]);
   const [recentBookings, setRecentBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = (pkg) => {
+    setSelectedPackage(pkg);
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setSelectedPackage(null);
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     loadDashboardData();
@@ -21,21 +37,23 @@ const OrganizerDashboard = () => {
 
   const loadDashboardData = async () => {
     try {
-      const [packages, bookings] = await Promise.all([
+      const [packagesData, bookings] = await Promise.all([
         api.organizer.getPackages(),
         api.organizer.getBookings(),
       ]);
 
+      setPackages(packagesData);
+
       setStats({
-        totalPackages: packages.length,
+        totalPackages: packagesData.length,
         activeBookings: bookings.filter((b) => b.status === "CONFIRMED").length,
         totalRevenue: bookings.reduce(
           (sum, b) => sum + parseFloat(b.total || 0),
           0
         ),
         averageRating:
-          packages.reduce((sum, p) => sum + (p.rating || 0), 0) /
-          (packages.length || 1),
+          packagesData.reduce((sum, p) => sum + (p.rating || 0), 0) /
+          (packagesData.length || 1),
       });
 
       setRecentBookings(bookings.slice(0, 5));
@@ -70,7 +88,7 @@ const OrganizerDashboard = () => {
           Manage Tour Packages
         </Link>
         <Link
-           to="/organizer/packages"
+          to="/organizer/packages"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           View Packages
@@ -103,6 +121,31 @@ const OrganizerDashboard = () => {
           </div>
           <div className="text-gray-600">Average Rating</div>
         </div>
+      </div>
+
+      {/* Package List */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 className="text-xl font-semibold mb-4">Your Packages</h2>
+        {packages.length === 0 ? (
+          <p className="text-gray-600">No packages created yet</p>
+        ) : (
+          <div className="space-y-2">
+            {packages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className="flex justify-between items-center border-b pb-2"
+              >
+                <p className="font-medium">{pkg.title}</p>
+                <button
+                  onClick={() => openModal(pkg)}
+                  className="bg-blue-600 text-white px-3 py-1 rounded"
+                >
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Recent Bookings */}
@@ -144,6 +187,15 @@ const OrganizerDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Package Modal */}
+      {modalOpen && selectedPackage && (
+        <TourPackageModal
+          isOpen={modalOpen}
+          onClose={closeModal}
+          packageData={selectedPackage}
+        />
+      )}
     </div>
   );
 };

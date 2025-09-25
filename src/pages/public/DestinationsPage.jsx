@@ -1,41 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
+import ReviewForm from '../../components/reviews/ReviewForm';
+import ReviewCard from '../../components/cards/ReviewCard';
 
 const DestinationsPage = () => {
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Modal state
   const [selectedDestination, setSelectedDestination] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Backend base URL for relative images
+  const [searchQuery, setSearchQuery] = useState('');
+
   const backendUrl = 'http://localhost:8000';
 
   useEffect(() => {
     loadDestinations();
   }, []);
 
-  const loadDestinations = async () => {
+  const loadDestinations = async (query = '') => {
+    setLoading(true);
+    setError('');
     try {
       const response = await api.catalog.getDestinations();
-      let data = [];
-      if (Array.isArray(response)) data = response;
-      else if (response?.results) data = response.results;
-      else if (response?.data) data = response.data;
+      console.log("API raw response:", response);
+      let data = Array.isArray(response)
+        ? response
+        : response?.results || response?.data || [];
+
+      if (query) {
+        data = data.filter(d => d.name.toLowerCase().includes(query.toLowerCase()));
+      }
 
       const normalized = data.map(d => ({
         id: d.id || d.pk,
         name: d.name || 'Unnamed',
         description: d.description || '',
-        image: d.image
-          ? d.image.startsWith('http')
-            ? d.image
-            : `${backendUrl}${d.image}`
+        cover_image_url: d.cover_image_url
+          ? d.cover_image_url.replace("http://", "https://")
+            ? d.cover_image_url
+            : `${backendUrl}${d.cover_image_url}`
           : '/api/placeholder/400/250',
         country: d.country || '',
+        reviews: [],
       }));
 
       setDestinations(normalized);
@@ -47,14 +56,36 @@ const DestinationsPage = () => {
     }
   };
 
-  const openModal = (destination) => {
+  const openModal = async (destination) => {
     setSelectedDestination(destination);
     setIsModalOpen(true);
+
+    try {
+      const reviews = await api.reviews.list({
+        content_type: 'destination',
+        object_id: destination.id,
+      });
+      setSelectedDestination(prev => ({
+        ...prev,
+        reviews: reviews?.filter(r => r.is_approved) || [],
+      }));
+    } catch (err) {
+      console.error('Failed to fetch reviews:', err);
+    }
   };
 
   const closeModal = () => {
     setSelectedDestination(null);
     setIsModalOpen(false);
+  };
+
+  const handleSearch = () => {
+    loadDestinations(searchQuery);
+  };
+
+  const handleReset = () => {
+    setSearchQuery('');
+    loadDestinations();
   };
 
   if (loading) return (
@@ -65,7 +96,30 @@ const DestinationsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Destinations</h1>
+      <h1 className="text-3xl font-bold mb-6">Destinations</h1>
+
+      {/* Search + Reset */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
+        <input
+          type="text"
+          placeholder="Search destinations..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full md:w-1/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        >
+          Search
+        </button>
+        <button
+          onClick={handleReset}
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400"
+        >
+          Reset
+        </button>
+      </div>
 
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
@@ -83,7 +137,7 @@ const DestinationsPage = () => {
             >
               <div className="relative">
                 <img
-                  src={dest.image}
+                  src={dest.cover_image_url}
                   alt={dest.name}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -99,7 +153,7 @@ const DestinationsPage = () => {
                 <Link
                   to={`/tour-packages?destination=${dest.id}`}
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 text-center block"
-                  onClick={(e) => e.stopPropagation()} // Prevent modal from opening when clicking link
+                  onClick={(e) => e.stopPropagation()}
                 >
                   View Tour Packages
                 </Link>
@@ -116,34 +170,84 @@ const DestinationsPage = () => {
       )}
 
       {/* Modal */}
-      {isModalOpen && selectedDestination && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800"
-            >
-              ✕
-            </button>
-            <img
-              src={selectedDestination.image}
-              alt={selectedDestination.name}
-              className="w-full h-64 object-cover rounded mb-4"
-            />
-            <h2 className="text-2xl font-bold mb-2">{selectedDestination.name}</h2>
-            {selectedDestination.country && (
-              <p className="text-gray-500 mb-2">{selectedDestination.country}</p>
-            )}
-            <p className="text-gray-700 mb-4">{selectedDestination.description}</p>
-            <Link
-              to={`/tour-packages?destination=${selectedDestination.id}`}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 text-center block"
-            >
-              View Tour Packages
-            </Link>
-          </div>
-        </div>
+    {isModalOpen && selectedDestination && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative 
+                    max-h-[80vh] overflow-y-auto">
+      {/* Top-right Close Button */}
+      <button
+        onClick={closeModal}
+        className="absolute top-3 right-3 bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded-full font-bold"
+      >
+        ✕ Close
+      </button>
+
+      {/* Cover Image */}
+      <img
+        src={selectedDestination.cover_image_url}
+        alt={selectedDestination.name}
+        className="w-full h-48 object-cover rounded mb-4"
+      />
+
+      {/* Content */}
+      <h2 className="text-2xl font-bold mb-2">{selectedDestination.name}</h2>
+      {selectedDestination.country && (
+        <p className="text-gray-500 mb-2">{selectedDestination.country}</p>
       )}
+      <p className="text-gray-700 mb-4">{selectedDestination.description}</p>
+
+      <Link
+        to={`/tour-packages?destination=${selectedDestination.id}`}
+        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 text-center block mb-4"
+      >
+        View Tour Packages
+      </Link>
+
+      {/* Footer Close Button */}
+      <button
+        onClick={closeModal}
+        className="w-full bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400 mb-4"
+      >
+        Close
+      </button>
+
+      {/* Reviews Section */}
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold mb-2">Reviews</h3>
+
+        <ReviewForm
+          type="destination"
+          objectId={selectedDestination.id}
+          onSuccess={async () => {
+            try {
+              const reviews = await api.reviews.list({
+                content_type: 'destination',
+                object_id: selectedDestination.id,
+              });
+              setSelectedDestination(prev => ({
+                ...prev,
+                reviews: reviews?.filter(r => r.is_approved) || [],
+              }));
+            } catch (err) {
+              console.error('Failed to reload reviews:', err);
+            }
+          }}
+        />
+
+        {selectedDestination.reviews?.length > 0 ? (
+          <div className="space-y-4 max-h-48 overflow-y-auto mb-4 pr-2">
+            {selectedDestination.reviews.map(review => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 mb-4 text-sm">No reviews yet.</p>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
