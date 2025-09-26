@@ -5,9 +5,9 @@ import ReviewCard from "../../components/cards/ReviewCard";
 
 const HomePage = () => {
   const featuredDestinations = [
-    { id: 1, name: "Maasai Mara", image: "/images/maasai-mara.jpg", description: "Wildlife Safari Adventure" },
-    { id: 2, name: "Diani Beach", image: "/images/diani-beach.jpg", description: "Tropical Beach Paradise" },
-    { id: 3, name: "Dubai", image: "/images/dubai.jpg", description: "Luxury City Experience" },
+    { id: 1, name: "Maasai Mara", image: "images/OIP-1816564833.jpeg", description: "Wildlife Safari Adventure" },
+    { id: 2, name: "Diani Beach", image: "images/OIP-347162889.jpeg", description: "Tropical Beach Paradise" },
+    { id: 3, name: "Dubai", image: "images/OIP-3724049105.jpeg", description: "Luxury City Experience" },
   ];
 
   const reviews = [
@@ -18,22 +18,21 @@ const HomePage = () => {
   ];
 
   const services = [
-    { icon: "✈️", title: "Flights", description: "Best deals on flights worldwide", link: "/flights" },
-    { icon: "🏨", title: "Hotels", description: "Luxury stays at affordable prices", link: "/hotels" },
-    { icon: "🚗", title: "Car Rentals", description: "Flexible rental options", link: "/cars" },
-    { icon: "🌴", title: "Tour Packages", description: "Curated travel experiences", link: "/tour-packages" },
+    { icon: "", title: "Flights", description: "Best deals on flights worldwide", link: "/flights" },
+    { icon: "", title: "Hotels", description: "Luxury stays at affordable prices", link: "/hotels" },
+    { icon: "", title: "Car Rentals", description: "Flexible rental options", link: "/cars" },
+    { icon: "", title: "Tour Packages", description: "Curated travel experiences", link: "/tour-packages" },
   ];
 
   const experiences = [
-    { image: "/images/safari.jpg", title: "Wildlife Safaris", description: "Encounter amazing wildlife" },
-    { image: "/images/beach.jpg", title: "Beach Holidays", description: "Relax on pristine beaches" },
-    { image: "/images/city.jpg", title: "City Breaks", description: "Explore vibrant cities" },
-    { image: "/images/adventure.jpg", title: "Adventure Sports", description: "Thrilling activities" },
+    { image: "images/OIP-3355514081.jpeg", title: "Wildlife Safaris", description: "Encounter amazing wildlife" },
+    { image: "images/OIP-292472245.jpeg", title: "Beach Holidays", description: "Relax on pristine beaches" },
+    { image: "images/OIP-1900420781.jpeg", title: "City Breaks", description: "Explore vibrant cities" },
+    { image: "images/OIP-3632286247.jpeg", title: "Adventure Sports", description: "Thrilling activities" },
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Updated to match CarsPage */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white py-32">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
@@ -49,13 +48,13 @@ const HomePage = () => {
               to="/destinations"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              🌍 Explore Destinations
+               Explore Destinations
             </Link>
             <Link
               to="/tour-packages"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              📦 View Packages
+               View Packages
             </Link>
           </div>
         </div>
@@ -84,7 +83,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Featured Destinations - Updated */}
+      {/* Featured Destinations */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -99,10 +98,10 @@ const HomePage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {featuredDestinations.map((dest) => (
               <div key={dest.id} className="group">
-                <Link to={`/destinations/${dest.id}`}>
+                <Link to={`/destinations/`}>
                   <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 overflow-hidden">
                     <img
-                      src={dest.image}
+                      src={ dest.image}
                       alt={dest.name}
                       className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
                     />

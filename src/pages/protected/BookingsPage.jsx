@@ -38,7 +38,7 @@ const BookingsPage = () => {
 
   const handleViewDetails = (booking) => {
     // Navigate to booking details page with booking data
-    navigate(`/bookings/${booking.id}`, { 
+    navigate(`/booking/${booking.id}`, { 
       state: { 
         bookingData: booking,
         type: booking.booking_type || 'general'

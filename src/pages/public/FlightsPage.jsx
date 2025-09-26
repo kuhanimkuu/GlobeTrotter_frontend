@@ -52,14 +52,14 @@ const FlightsPage = () => {
     setLoading(true);
     setError('');
     setFlights([]);
-    console.log('🚀 Sending flight search request with:', searchParams);
+    console.log(' Sending flight search request with:', searchParams);
 
     try {
       const data = await api.flights.search(searchParams);
-      console.log('✅ Flight search response:', data);
+      console.log(' Flight search response:', data);
       setFlights(normalizeFlights(Array.isArray(data) ? data : []));
     } catch (err) {
-      console.error('❌ Flight search failed:', err);
+      console.error(' Flight search failed:', err);
       setError(err.message || 'Failed to search flights');
     } finally {
       setLoading(false);
@@ -120,13 +120,13 @@ const FlightsPage = () => {
               onClick={() => document.getElementById('search-section').scrollIntoView({ behavior: 'smooth' })}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              ✈️ Search Flights
+               Search Flights
             </button>
             <Link
               to="/destinations"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              🌍 Explore Destinations
+              Explore Destinations
             </Link>
           </div>
         </div>
@@ -281,7 +281,7 @@ const FlightsPage = () => {
             /* Empty State */
             !loading && (
               <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl">
-                <div className="text-8xl mb-6">✈️</div>
+                <div className="text-8xl mb-6"></div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">No flights found</h3>
                 <p className="text-gray-600 max-w-md mx-auto mb-6">
                   {searchParams.origin || searchParams.destination 
@@ -319,13 +319,13 @@ const FlightsPage = () => {
               onClick={resetForm}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-lg"
             >
-              ✈️ Browse All Flights
+              Browse All Flights
             </button>
             <Link
               to="/destinations"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              🌍 Explore Destinations
+              Explore Destinations
             </Link>
           </div>
         </div>

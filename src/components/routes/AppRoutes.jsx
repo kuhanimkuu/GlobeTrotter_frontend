@@ -20,7 +20,7 @@ import DestinationsPage from "../../pages/public/DestinationsPage";
 import FlightsPage from "../../pages/public/FlightsPage";
 import HotelsPage from "../../pages/public/HotelsPage";
 import TourPackagesPage from "../../pages/public/TourPackagesPage";
-
+import ContactPage from "../../pages/public/Contact";
 // =========================
 // Booking flow pages
 // =========================
@@ -75,7 +75,7 @@ const AppRoutes = () => {
         <Route path="flights" element={<FlightsPage />} />
         <Route path="hotels" element={<HotelsPage />} />
         <Route path="tour-packages" element={<TourPackagesPage />} />
-
+        <Route path="contact" element={<ContactPage />} />
         {/* Booking flow */}
         <Route path="booking-wizard" element={<BookingWizardPage />} />
         <Route path="cars-booking-wizard" element={<CarBookingWizardPage />} />

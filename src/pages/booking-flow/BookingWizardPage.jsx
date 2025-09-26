@@ -5,6 +5,7 @@ import { api } from '../../services/api';
 
 export default function BookingWizardPage() {
   const { state } = useLocation();
+  console.log('BookingWizardPage state:', state);
   const navigate = useNavigate();
   const { user } = useAuth();
   const bookingType = state?.type; 

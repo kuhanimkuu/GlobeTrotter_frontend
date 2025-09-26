@@ -192,7 +192,13 @@ const Navigation = () => {
             >
               Cars
             </Link>
-            
+             <Link 
+              to="/contact" 
+              onClick={() => setMobileOpen(false)}
+              className="block py-3 text-gray-700 font-medium border-b border-gray-100 hover:text-yellow-600 transition-colors"
+            >
+              Contact Us
+            </Link>
 
            {isAuthenticated && (
               <RoleBasedContent forRole="customer">

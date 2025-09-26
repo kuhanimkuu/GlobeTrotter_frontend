@@ -7,15 +7,15 @@ const BookingPage = () => {
   const { user } = useAuth();
 
   const bookingType = state?.type;
-  const bookingData = state?.data;
+  const bookingData = state?.bookingData;
 
   const getBookingIcon = () => {
     switch (bookingType) {
-      case 'flight': return '✈️';
-      case 'hotel': return '🏨';
-      case 'car': return '🚗';
-      case 'package': return '🌴';
-      default: return '📋';
+      case 'flight': return '';
+      case 'hotel': return '';
+      case 'car': return '';
+      case 'package': return '';
+      default: return '';
     }
   };
 
@@ -34,14 +34,14 @@ const BookingPage = () => {
       case 'flight':
         return {
           title: `${bookingData?.origin} → ${bookingData?.destination}`,
-          details: [
-            { label: 'Airline', value: bookingData?.airline },
-            { label: 'Flight Number', value: bookingData?.flightNumber },
-            { label: 'Departure', value: bookingData?.departureTime },
-            { label: 'Duration', value: bookingData?.duration },
-            { label: 'Price', value: bookingData?.price, highlight: true }
-          ]
-        };
+           details: [
+      { label: 'Airline', value: bookingData.airline_name },
+      { label: 'Flight Number', value: bookingData.flight_number },
+      { label: 'Departure', value: bookingData.departure_time },
+      { label: 'Duration', value: bookingData.duration },
+      { label: 'Price', value: bookingData.total, highlight: true }
+    ]
+  };
       case 'hotel':
         return {
           title: bookingData?.name,

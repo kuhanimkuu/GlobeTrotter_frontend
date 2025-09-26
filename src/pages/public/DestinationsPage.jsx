@@ -104,13 +104,13 @@ const DestinationsPage = () => {
               to="/tour-packages"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              🌍 Start Exploring
+               Start Exploring
             </Link>
             <Link
               to="/hotels"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              🏨 Find Stays
+               Find Stays
             </Link>
           </div>
         </div>
@@ -133,7 +133,7 @@ const DestinationsPage = () => {
                     className="w-full border border-gray-300 rounded-xl px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                   />
                   <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                    🔍
+                    
                   </div>
                 </div>
               </div>
@@ -252,13 +252,13 @@ const DestinationsPage = () => {
               to="/tour-packages"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-lg"
             >
-              📦 View All Packages
+             View All Packages
             </Link>
             <Link
               to="/contact"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              💬 Get Advice
+              Get Advice
             </Link>
           </div>
         </div>
@@ -302,7 +302,7 @@ const DestinationsPage = () => {
                   to={`/tour-packages?destination=${selectedDestination.id}`}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 text-center text-lg"
                 >
-                  🎒 View Tour Packages
+                   View Tour Packages
                 </Link>
                 <button
                   onClick={closeModal}

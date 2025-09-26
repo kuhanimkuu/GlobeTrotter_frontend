@@ -52,28 +52,29 @@ const TourPackagesPage = () => {
     loadPackages();
   };
 
-  const handleBook = (pkg) => {
-    if (user) {
-      navigate(`/booking-wizard`);
-    } else {
-      setShowLoginPopup(true);
-    }
-  };
+ const handleBook = (pkg) => {
+  if (user) {
+    navigate(`/booking-wizard`, { state: { type: "package", data: pkg, id: pkg.id } });
+  } else {
+    setShowLoginPopup(true);
+  }
+};
+
 
   const destinations = [
-    { name: "Maasai Mara", icon: "🦁" },
-    { name: "Diani Beach", icon: "🏖️" },
-    { name: "Dubai", icon: "🏙️" },
-    { name: "Paris", icon: "🗼" },
-    { name: "Tokyo", icon: "🗾" },
-    { name: "New York", icon: "🗽" }
+    { name: "Maasai Mara", image: "images/maasai-mara.jpeg" },
+    { name: "Diani Beach", image: "images/diani.jpeg" },
+    { name: "Dubai", image: "images/dubai.jpeg" },
+    { name: "Paris", image: "images/paris.jpeg" },
+    { name: "Tokyo", image: "images/tokyo.jpeg" },
+    { name: "New York", image: "images/new-york.jpeg" }
   ];
 
   const packageTypes = [
-    { icon: "🌴", title: "Beach Getaways", description: "Relaxing coastal escapes" },
-    { icon: "🦁", title: "Safari Adventures", description: "Wildlife experiences" },
-    { icon: "🏙️", title: "City Breaks", description: "Urban explorations" },
-    { icon: "⛰️", title: "Mountain Treks", description: "Adventure hiking" }
+    { image: "images/beach-getaways.jpeg", title: "Beach Getaways", description: "Relaxing coastal escapes" },
+    { image: "images/safari-adventures.jpeg", title: "Safari Adventures", description: "Wildlife experiences" },
+    { image: "images/city-breaks.jpeg", title: "City Breaks", description: "Urban explorations" },
+    { image: "images/mountain-trek.jpeg", title: "Mountain Treks", description: "Adventure hiking" }
   ];
 
   const activePackages = packages.filter(pkg => {
@@ -99,13 +100,13 @@ const TourPackagesPage = () => {
               to="/destinations"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              🌍 Explore All Packages
+               Explore All Packages
             </Link>
             <button
               onClick={() => document.getElementById('packages-grid').scrollIntoView({ behavior: 'smooth' })}
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              📦 View Deals
+               View Deals
             </button>
           </div>
         </div>
@@ -113,26 +114,42 @@ const TourPackagesPage = () => {
 
       {/* Popular Destinations */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-4">Popular Destinations</h2>
-          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Explore our most sought-after travel destinations around the world
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {destinations.map((dest, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                onClick={() => setFilters({ ...filters, destination: dest.name })}
-              >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {dest.icon}
-                </div>
-                <h3 className="font-bold text-gray-900 text-sm">{dest.name}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+  {destinations.map((dest, index) => (
+    <div
+      key={index}
+      onClick={() => setFilters({ ...filters, destination: dest.name })}
+      className="relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer group transform hover:-translate-y-1"
+    >
+      {/* Image */}
+      <div className="overflow-hidden rounded-t-3xl">
+        <img
+          src={dest.image}
+          alt={dest.name}
+          className="w-full h-36 md:h-40 object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+
+      {/* Overlay icon badge */}
+      <div className="absolute top-3 left-3 bg-yellow-400 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+        {dest.icon}
+      </div>
+
+      {/* Destination Info */}
+      <div className="p-4 flex flex-col items-center text-center space-y-2">
+        <h3 className="text-gray-900 font-bold text-sm md:text-base line-clamp-1">
+          {dest.name}
+        </h3>
+        <p className="text-gray-500 text-xs md:text-sm line-clamp-2">
+          Explore this amazing destination
+        </p>
+      </div>
+
+      {/* Hover Overlay */}
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"></div>
+    </div>
+  ))}
+</div>
       </section>
 
       {/* Search Filters - Updated Design */}
@@ -152,7 +169,7 @@ const TourPackagesPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    🌍 Destination
+                     Destination
                   </label>
                   <input
                     type="text"
@@ -164,7 +181,7 @@ const TourPackagesPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ⏱️ Duration
+                     Duration
                   </label>
                   <select
                     value={filters.duration}
@@ -179,7 +196,7 @@ const TourPackagesPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    💰 Price Range
+                     Price Range
                   </label>
                   <select
                     value={filters.price_range}
@@ -197,14 +214,14 @@ const TourPackagesPage = () => {
                     type="submit"
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition-all duration-200 transform hover:scale-105"
                   >
-                    🔍 Search
+                    Search
                   </button>
                   <button
                     type="button"
                     onClick={handleReset}
                     className="w-full border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-bold py-3 rounded-xl transition-all duration-200"
                   >
-                    🔄 Reset
+                    Reset
                   </button>
                 </div>
               </div>
@@ -221,16 +238,32 @@ const TourPackagesPage = () => {
             Find the perfect package type for your travel style
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {packageTypes.map((type, index) => (
-              <div key={index} className="text-center group">
-                <div className="bg-yellow-100 w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {type.icon}
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{type.title}</h3>
-                <p className="text-gray-600 text-sm">{type.description}</p>
-              </div>
-            ))}
-          </div>
+  {packageTypes.map((type, index) => (
+    <div
+      key={index}
+      className="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer group transform hover:-translate-y-1"
+    >
+      {/* Image */}
+      <div className="overflow-hidden rounded-t-3xl">
+        <img
+          src={type.image}
+          alt={type.title}
+          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="p-5 text-center space-y-2">
+        <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{type.title}</h3>
+        <p className="text-gray-600 text-sm line-clamp-2">{type.description}</p>
+      </div>
+
+      {/* Hover Overlay */}
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl"></div>
+    </div>
+  ))}
+</div>
+
         </div>
       </section>
 

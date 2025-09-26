@@ -40,96 +40,92 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-auto">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl h-[95vh] overflow-y-auto relative">
-        {/* Close Button */}
-        <button
-          className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 rounded-full p-2 transition-all duration-200 transform hover:scale-110 shadow-lg"
-          onClick={onClose}
-        >
-          <X className="w-6 h-6" />
-        </button>
+<div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl h-[85vh] overflow-y-auto relative p-6 md:p-8">
+  {/* Close Button */}
+  <button
+    className="absolute top-3 right-3 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 rounded-full p-2 transition-all duration-200 transform hover:scale-110 shadow-lg"
+    onClick={onClose}
+  >
+    <X className="w-5 h-5" />
+  </button>
 
-        {/* Hero Image Section */}
-        <div className="relative h-80">
-          {main_image_url ? (
-            <img
-              src={main_image_url}
-              alt={title}
-              className="w-full h-full object-cover rounded-t-2xl"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-600 rounded-t-2xl flex items-center justify-center">
-              <span className="text-6xl">🌴</span>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-2xl"></div>
-          
-          {/* Status Badge */}
-          <div className="absolute top-4 left-4">
-            <span
-              className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm ${
-                isExpired
-                  ? "bg-red-500/90 text-white"
-                  : is_active
-                  ? "bg-green-500/90 text-white"
-                  : "bg-gray-500/90 text-white"
-              }`}
-            >
-              {isExpired ? "✈️ Expired" : is_active ? "✅ Available" : "❌ Unavailable"}
-            </span>
-          </div>
+  {/* Hero Image Section */}
+  <div className="relative h-48 md:h-56 lg:h-64 rounded-xl overflow-hidden mb-4">
+    {main_image_url ? (
+      <img
+        src={main_image_url}
+        alt={title}
+        className="w-full h-full object-cover"
+      />
+    ) : (
+      <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center">
+        <span className="text-4xl md:text-5xl">🌴</span>
+      </div>
+    )}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 
-          {/* Title Overlay */}
-          <div className="absolute bottom-6 left-6 right-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-2xl">
-              {title}
-            </h2>
-            <div className="flex items-center gap-2 text-white/90">
-              <MapPin className="w-5 h-5" />
-              <span className="text-lg">
-                {destination?.name || "N/A"} {destination?.country && `, ${destination.country}`}
-              </span>
-            </div>
-          </div>
-        </div>
+    {/* Status Badge */}
+    <div className="absolute top-3 left-3">
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-bold backdrop-blur-sm ${
+          isExpired
+            ? "bg-red-500/90 text-white"
+            : is_active
+            ? "bg-green-500/90 text-white"
+            : "bg-gray-500/90 text-white"
+        }`}
+      >
+        {isExpired ? "✈️ Expired" : is_active ? "✅ Available" : "❌ Unavailable"}
+      </span>
+    </div>
 
-        {/* Content Section */}
-        <div className="p-6 md:p-8">
-          {/* Summary */}
-          <div className="mb-8">
-            <p className="text-gray-700 text-lg leading-relaxed bg-blue-50/50 p-6 rounded-2xl border-l-4 border-yellow-500">
-              {summary || "No summary available."}
-            </p>
-          </div>
+    {/* Title Overlay */}
+    <div className="absolute bottom-3 left-3 right-3">
+      <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-1 drop-shadow-lg">
+        {title}
+      </h2>
+      <div className="flex items-center gap-1 text-white/90 text-xs md:text-sm">
+        <MapPin className="w-4 h-4" />
+        <span>
+          {destination?.name || "N/A"} {destination?.country && `, ${destination.country}`}
+        </span>
+      </div>
+    </div>
+  </div>
 
-          {/* Quick Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl text-center">
-              <Calendar className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-              <p className="font-semibold text-gray-900">{duration_days} Days</p>
-              <p className="text-sm text-gray-600">{nights} Nights</p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-2xl text-center">
-              <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
-              <p className="font-semibold text-gray-900">{max_capacity || "N/A"}</p>
-              <p className="text-sm text-gray-600">Max Capacity</p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-2xl text-center">
-              <Star className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-              <p className="font-semibold text-gray-900">{currency}</p>
-              <p className="text-sm text-gray-600">Currency</p>
-            </div>
-            
-            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-2xl text-center">
-              <div className="w-8 h-8 text-yellow-600 mx-auto mb-2 text-2xl">💰</div>
-              <p className="font-semibold text-gray-900">{formatPrice(total_price || base_price)}</p>
-              <p className="text-sm text-gray-600">Total Price</p>
-            </div>
-          </div>
+  {/* Content Section */}
+  <div className="space-y-4 md:space-y-6">
+    {/* Summary */}
+    <div>
+      <p className="text-gray-700 text-sm md:text-base leading-relaxed bg-blue-50/50 p-4 rounded-2xl border-l-4 border-yellow-500">
+        {summary || "No summary available."}
+      </p>
+    </div>
 
-          {/* Detailed Information Grid */}
+    {/* Quick Info Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-3 rounded-2xl text-center">
+        <Calendar className="w-5 h-5 md:w-6 md:h-6 text-blue-600 mx-auto mb-1" />
+        <p className="font-semibold text-gray-900 text-xs md:text-sm">{duration_days} Days</p>
+        <p className="text-xs text-gray-600">{nights} Nights</p>
+      </div>
+      <div className="bg-gradient-to-br from-green-50 to-green-100 p-3 rounded-2xl text-center">
+        <Users className="w-5 h-5 md:w-6 md:h-6 text-green-600 mx-auto mb-1" />
+        <p className="font-semibold text-gray-900 text-xs md:text-sm">{max_capacity || "N/A"}</p>
+        <p className="text-xs text-gray-600">Max Capacity</p>
+      </div>
+      <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-3 rounded-2xl text-center">
+        <Star className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-1" />
+        <p className="font-semibold text-gray-900 text-xs md:text-sm">{currency}</p>
+        <p className="text-xs text-gray-600">Currency</p>
+      </div>
+      <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-3 rounded-2xl text-center">
+        <div className="w-5 h-5 md:w-6 md:h-6 text-yellow-600 mx-auto mb-1 text-xl">💰</div>
+        <p className="font-semibold text-gray-900 text-xs md:text-sm">{formatPrice(total_price || base_price)}</p>
+        <p className="text-xs text-gray-600">Total Price</p>
+      </div>
+    </div>
+      {/* Detailed Information Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             {/* Left Column - Trip Details */}
             <div className="space-y-6">
@@ -174,7 +170,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <Utensils className="w-6 h-6 text-green-600" />
-                    What's Included
+                   Inclusions
                   </h3>
                   <p className="text-gray-700 leading-relaxed">{inclusions}</p>
                 </div>
@@ -185,7 +181,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
                 <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-6">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <Shield className="w-6 h-6 text-red-600" />
-                    What's Not Included
+                    Exclusions
                   </h3>
                   <p className="text-gray-700 leading-relaxed">{exclusions}</p>
                 </div>
