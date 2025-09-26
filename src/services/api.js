@@ -51,10 +51,13 @@ export const api = {
     }
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-       console.error("Booking API error:", errorData);
-      throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
-    }
+  const errorData = await response.json().catch(() => ({}));
+  console.error("Booking API error:", errorData);
+
+  const error = new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+  error.response = { data: errorData, status: response.status };
+  throw error;
+}
 
     const text = await response.text().catch(() => '');
     return text ? JSON.parse(text) : {};

@@ -30,73 +30,57 @@ const ManageCarsPage = () => {
     queryFn: api.catalog.getDestinations,
   });
 
-  const saveCarMutation = useMutation({
-    mutationFn: async (carData) => {
-      let destId = carData.destination_id;
+const saveCarMutation = useMutation({
+  mutationFn: async (carData) => {
+    let destId = carData.destination_id;
 
-      if (!destId && carData.city) {
-        const existing = destinations.find(
-          (d) => d.name.toLowerCase() === carData.city.toLowerCase()
-        );
-        if (existing) {
-          destId = existing.id;
-        } else {
-          const newDest = await api.catalog.createDestination({ name: carData.city });
-          destId = newDest.id;
-        }
+    if (!destId && carData.city) {
+      const existing = destinations.find(
+        (d) => d.name.toLowerCase() === carData.city.toLowerCase()
+      );
+      if (existing) {
+        destId = existing.id;
+      } else {
+        const newDest = await api.catalog.createDestination({ name: carData.city });
+        destId = newDest.id;
       }
+    }
 
-      const formData = new FormData();
-      formData.append("make", carData.make);
-      formData.append("model", carData.model);
-      formData.append("category", carData.category);
-      formData.append("daily_rate", Number(carData.daily_rate));
-      formData.append("currency", carData.currency);
-      formData.append("description", carData.description);
-      if (destId) formData.append("destination_id", destId);
-      if (carImage) formData.append("carimage", carImage);
-      if (carData.driver_name) formData.append("driver_name", carData.driver_name);
-if (carData.driver_contact) formData.append("driver_contact", carData.driver_contact);
-      return carData.id
-        ? api.inventory.updateCar(carData.id, formData)
-        : api.inventory.createCar(formData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["admin-cars"]);
-      setNewCar({
-        id: null,
-        make: "",
-        model: "",
-        category: "",
-        daily_rate: "",
-        currency: "USD",
-        description: "",
-        city: "",
-        destination_id: "",
-      });
-      setCarImage(null);
-    },
-  });
+    const formData = new FormData();
+    formData.append("make", carData.make);
+    formData.append("model", carData.model);
+    formData.append("category", carData.category);
+    formData.append("daily_rate", carData.daily_rate); // string is fine
+    formData.append("currency", carData.currency);
+    formData.append("description", carData.description);
+    if (destId) formData.append("destination_id", destId); // must be a number
+    if (carImage) formData.append("carimage", carImage);
+    if (carData.driver_name) formData.append("driver_name", carData.driver_name);
+    if (carData.driver_contact) formData.append("driver_contact", carData.driver_contact);
 
-  const deleteCar = useMutation({
-    mutationFn: (id) => api.inventory.deleteCar(id),
-    onSuccess: () => queryClient.invalidateQueries(["admin-cars"]),
-  });
-
-  const handleEdit = (car) => {
+    return carData.id
+      ? api.inventory.updateCar(carData.id, formData)
+      : api.inventory.createCar(formData);
+  },
+  onSuccess: () => {
+    queryClient.invalidateQueries(["admin-cars"]);
     setNewCar({
-      id: car.id,
-      make: car.make,
-      model: car.model,
-      category: car.category || "",
-      daily_rate: car.daily_rate,
-      currency: car.currency,
-      description: car.description,
-      city: car.destination?.name || "",
-      destination_id: car.destination?.id || "",
+      id: null,
+      make: "",
+      model: "",
+      category: "",
+      daily_rate: "",
+      currency: "USD",
+      description: "",
+      city: "",
+      destination_id: "",
+      driver_name: "",
+      driver_contact: "",
     });
     setCarImage(null);
-  };
+  },
+});
+
 
   if (carsLoading || destinationsLoading) return <p>Loading...</p>;
 

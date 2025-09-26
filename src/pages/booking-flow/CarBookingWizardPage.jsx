@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { api } from "../../services/api";
@@ -8,7 +8,7 @@ export default function CarBookingWizardPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const car = state?.data; 
+  const car = state?.data || null;
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,7 +18,7 @@ export default function CarBookingWizardPage() {
     end_date: "",
     passengers: [
       {
-        first_name: user?.first_name || "",
+        first_name: user?.first_name || user?.username || "",
         last_name: user?.last_name || "",
         email: user?.email || "",
         phone: user?.phone || "",
@@ -26,6 +26,39 @@ export default function CarBookingWizardPage() {
     ],
     special_requests: "",
   });
+
+  // Redirect back if no car
+  useEffect(() => {
+    if (!car) {
+      navigate("/cars");
+    }
+  }, [car, navigate]);
+
+  // Update passenger info if user changes
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        passengers: [
+          {
+            first_name: user.first_name || "",
+            last_name: user.last_name || "",
+            email: user.email || "",
+            phone: user.phone || "",
+          },
+        ],
+      }));
+    }
+  }, [user]);
+
+  // ✅ helper to calculate total
+  const getCarTotal = () => {
+    if (!car || !formData.start_date || !formData.end_date) return 0;
+    const start = new Date(formData.start_date);
+    const end = new Date(formData.end_date);
+    const days = Math.max((end - start) / (1000 * 60 * 60 * 24), 1);
+    return days * (car?.daily_rate || car?.price || 0);
+  };
 
   const updatePassenger = (index, patch) => {
     setFormData((prev) => {
@@ -38,7 +71,10 @@ export default function CarBookingWizardPage() {
   const addPassenger = () => {
     setFormData((prev) => ({
       ...prev,
-      passengers: [...prev.passengers, { first_name: "", last_name: "", email: "", phone: "" }],
+      passengers: [
+        ...prev.passengers,
+        { first_name: "", last_name: "", email: "", phone: "" },
+      ],
     }));
   };
 
@@ -52,27 +88,35 @@ export default function CarBookingWizardPage() {
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
+
     try {
       const payload = {
-        type: "car",
-        object_id: car?.id,
-        passengers: formData.passengers,
-        start_date: formData.start_date,
-        end_date: formData.end_date,
-        special_requests: formData.special_requests,
+        currency: car?.currency || "USD",
+        note: formData.special_requests || "",
+        items: [
+          {
+            type: "car",
+            id: car?.id,
+            start_date: formData.start_date,
+            end_date: formData.end_date,
+            quantity: 1,
+            unit_price: car?.daily_rate || car?.price || 0,
+          },
+        ],
       };
 
+      console.log("🚗 Sending car booking payload:", payload);
+
       const response = await api.booking.create(payload);
-      navigate("/payment", {
-        state: {
-          booking: response,
-          amount: response?.total || car?.total_price || car?.price || 0,
-          currency: response?.currency || car?.currency || "USD",
-        },
-      });
+navigate("/payment", {
+  state: {
+    booking: response,
+    // let PaymentPage handle picking total
+  },
+});
     } catch (err) {
-      console.error("Booking failed", err);
-      setError(err?.message || "Failed to create booking");
+      console.error("Booking failed full error:", err);
+      setError(err.message || "Booking failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -91,7 +135,6 @@ export default function CarBookingWizardPage() {
       }
     }
     if (step === 2) {
-      // final submit
       await handleSubmit();
     } else {
       setStep((s) => s + 1);
@@ -111,7 +154,9 @@ export default function CarBookingWizardPage() {
             <div key={i} className="flex items-center gap-2">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  step - 1 >= i ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-600"
+                  step - 1 >= i
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-300 text-gray-600"
                 }`}
               >
                 {i + 1}
@@ -132,7 +177,9 @@ export default function CarBookingWizardPage() {
                   type="date"
                   className="border p-2 rounded w-full"
                   value={formData.start_date}
-                  onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, start_date: e.target.value })
+                  }
                 />
               </div>
               <div>
@@ -141,7 +188,9 @@ export default function CarBookingWizardPage() {
                   type="date"
                   className="border p-2 rounded w-full"
                   value={formData.end_date}
-                  onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, end_date: e.target.value })
+                  }
                 />
               </div>
 
@@ -153,13 +202,17 @@ export default function CarBookingWizardPage() {
                       <input
                         placeholder="First Name"
                         value={p.first_name}
-                        onChange={(e) => updatePassenger(idx, { first_name: e.target.value })}
+                        onChange={(e) =>
+                          updatePassenger(idx, { first_name: e.target.value })
+                        }
                         className="border px-2 py-1 rounded flex-1"
                       />
                       <input
                         placeholder="Last Name"
                         value={p.last_name}
-                        onChange={(e) => updatePassenger(idx, { last_name: e.target.value })}
+                        onChange={(e) =>
+                          updatePassenger(idx, { last_name: e.target.value })
+                        }
                         className="border px-2 py-1 rounded flex-1"
                       />
                     </div>
@@ -167,13 +220,17 @@ export default function CarBookingWizardPage() {
                       <input
                         placeholder="Email"
                         value={p.email}
-                        onChange={(e) => updatePassenger(idx, { email: e.target.value })}
+                        onChange={(e) =>
+                          updatePassenger(idx, { email: e.target.value })
+                        }
                         className="border px-2 py-1 rounded flex-1"
                       />
                       <input
                         placeholder="Phone"
                         value={p.phone}
-                        onChange={(e) => updatePassenger(idx, { phone: e.target.value })}
+                        onChange={(e) =>
+                          updatePassenger(idx, { phone: e.target.value })
+                        }
                         className="border px-2 py-1 rounded flex-1"
                       />
                     </div>
@@ -198,11 +255,18 @@ export default function CarBookingWizardPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium">Special Requests</label>
+                <label className="block text-sm font-medium">
+                  Special Requests
+                </label>
                 <textarea
                   className="border rounded w-full p-2"
                   value={formData.special_requests}
-                  onChange={(e) => setFormData({ ...formData, special_requests: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      special_requests: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -218,12 +282,17 @@ export default function CarBookingWizardPage() {
                 <strong>Car:</strong> {car?.make} {car?.model}
               </p>
               <p>
-                <strong>Period:</strong> {formData.start_date} → {formData.end_date}
+                <strong>Period:</strong> {formData.start_date} →{" "}
+                {formData.end_date}
+              </p>
+              <p>
+                <strong>Daily Rate:</strong> {car?.currency} {car?.daily_rate}
               </p>
               <p>
                 <strong>Total Price:</strong> {car?.currency}{" "}
-                {car?.total_price || car?.price}
+                {getCarTotal().toFixed(2)}
               </p>
+
               <div>
                 <h4 className="font-medium">Passengers</h4>
                 <ul className="list-disc list-inside text-sm">
