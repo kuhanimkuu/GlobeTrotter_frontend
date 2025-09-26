@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, MapPin, Users, Star } from "lucide-react";
+import { Calendar, MapPin, Users, Star, X, Hotel, Car, Shield, Utensils, Wifi } from "lucide-react";
 
-const PackageDetailModal = ({ tourPackage, onClose }) => {
+const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
   if (!tourPackage) return null;
 
   const navigate = useNavigate();
@@ -23,178 +23,289 @@ const PackageDetailModal = ({ tourPackage, onClose }) => {
     is_active,
     hotel,
     car,
+    highlights,
+    policies,
+    inclusions,
+    exclusions
   } = tourPackage;
 
   const startDate = start_date ? new Date(start_date) : null;
   const endDate = end_date ? new Date(end_date) : null;
   const isExpired = endDate && new Date() > endDate;
 
+  // Format price with commas
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat().format(price);
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-auto">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-5xl h-[90vh] overflow-y-auto relative p-6">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-6xl h-[95vh] overflow-y-auto relative">
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+          className="absolute top-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 rounded-full p-2 transition-all duration-200 transform hover:scale-110 shadow-lg"
           onClick={onClose}
         >
-          ✕
+          <X className="w-6 h-6" />
         </button>
 
-        {/* Image */}
-        {main_image_url && (
-          <img
-            src={main_image_url}
-            alt={title}
-            className="w-full h-64 object-cover rounded-xl mb-6"
-          />
-        )}
-
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
-          <h2 className="text-2xl font-bold">{title}</h2>
-          <span
-            className={`px-3 py-1 rounded text-sm font-semibold mt-2 md:mt-0 ${
-              isExpired
-                ? "bg-red-100 text-red-800"
-                : is_active
-                ? "bg-green-100 text-green-800"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            {isExpired ? "Expired" : is_active ? "Available" : "Unavailable"}
-          </span>
-        </div>
-
-        {/* Summary */}
-        <p className="text-gray-700 mb-6">{summary || "No summary available."}</p>
-
-        {/* Basic Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-            <p className="flex items-center gap-2">
-              <MapPin className="w-4 h-4" />
-              <strong>Destination:</strong>{" "}
-              {destination?.name || "N/A"} {destination?.country && `, ${destination.country}`}
-            </p>
-            {startDate && (
-              <p className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <strong>Start Date:</strong> {startDate.toLocaleDateString()}
-              </p>
-            )}
-            {endDate && (
-              <p className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                <strong>End Date:</strong> {endDate.toLocaleDateString()}
-              </p>
-            )}
-            <p className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <strong>Duration:</strong> {duration_days} days / {nights} nights
-            </p>
-            <p className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <strong>Capacity:</strong> {max_capacity || "N/A"} people
-            </p>
-            <p className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              <strong>Price:</strong> {total_price || base_price} {currency}
-            </p>
+        {/* Hero Image Section */}
+        <div className="relative h-80">
+          {main_image_url ? (
+            <img
+              src={main_image_url}
+              alt={title}
+              className="w-full h-full object-cover rounded-t-2xl"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-600 rounded-t-2xl flex items-center justify-center">
+              <span className="text-6xl">🌴</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-t-2xl"></div>
+          
+          {/* Status Badge */}
+          <div className="absolute top-4 left-4">
+            <span
+              className={`px-4 py-2 rounded-full text-sm font-bold backdrop-blur-sm ${
+                isExpired
+                  ? "bg-red-500/90 text-white"
+                  : is_active
+                  ? "bg-green-500/90 text-white"
+                  : "bg-gray-500/90 text-white"
+              }`}
+            >
+              {isExpired ? "✈️ Expired" : is_active ? "✅ Available" : "❌ Unavailable"}
+            </span>
           </div>
 
-          {/* Optional Highlights / Policies */}
-          <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-            <p><strong>Highlights:</strong> {tourPackage.highlights || "N/A"}</p>
-            <p><strong>Policies:</strong> {tourPackage.policies || "N/A"}</p>
-            <p><strong>Inclusions:</strong> {tourPackage.inclusions || "N/A"}</p>
-            <p><strong>Exclusions:</strong> {tourPackage.exclusions || "N/A"}</p>
+          {/* Title Overlay */}
+          <div className="absolute bottom-6 left-6 right-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-2xl">
+              {title}
+            </h2>
+            <div className="flex items-center gap-2 text-white/90">
+              <MapPin className="w-5 h-5" />
+              <span className="text-lg">
+                {destination?.name || "N/A"} {destination?.country && `, ${destination.country}`}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Hotel Info */}
-        {hotel && (
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-2">🏨 Hotel Info</h3>
-            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              {hotel.cover_image_url && (
-                <img
-                  src={hotel.cover_image_url}
-                  alt={hotel.name}
-                  className="w-full h-48 object-cover rounded mb-4"
-                />
+        {/* Content Section */}
+        <div className="p-6 md:p-8">
+          {/* Summary */}
+          <div className="mb-8">
+            <p className="text-gray-700 text-lg leading-relaxed bg-blue-50/50 p-6 rounded-2xl border-l-4 border-yellow-500">
+              {summary || "No summary available."}
+            </p>
+          </div>
+
+          {/* Quick Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl text-center">
+              <Calendar className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+              <p className="font-semibold text-gray-900">{duration_days} Days</p>
+              <p className="text-sm text-gray-600">{nights} Nights</p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-2xl text-center">
+              <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
+              <p className="font-semibold text-gray-900">{max_capacity || "N/A"}</p>
+              <p className="text-sm text-gray-600">Max Capacity</p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-2xl text-center">
+              <Star className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+              <p className="font-semibold text-gray-900">{currency}</p>
+              <p className="text-sm text-gray-600">Currency</p>
+            </div>
+            
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-2xl text-center">
+              <div className="w-8 h-8 text-yellow-600 mx-auto mb-2 text-2xl">💰</div>
+              <p className="font-semibold text-gray-900">{formatPrice(total_price || base_price)}</p>
+              <p className="text-sm text-gray-600">Total Price</p>
+            </div>
+          </div>
+
+          {/* Detailed Information Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Left Column - Trip Details */}
+            <div className="space-y-6">
+              {/* Dates */}
+              <div className="bg-gray-50 rounded-2xl p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Calendar className="w-6 h-6 text-blue-600" />
+                  Trip Dates
+                </h3>
+                <div className="space-y-3">
+                  {startDate && (
+                    <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                      <span className="font-medium">Start Date:</span>
+                      <span className="text-blue-600 font-semibold">{startDate.toLocaleDateString()}</span>
+                    </div>
+                  )}
+                  {endDate && (
+                    <div className="flex justify-between items-center p-3 bg-white rounded-lg">
+                      <span className="font-medium">End Date:</span>
+                      <span className="text-blue-600 font-semibold">{endDate.toLocaleDateString()}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Highlights */}
+              {highlights && (
+                <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Star className="w-6 h-6 text-yellow-600" />
+                    Trip Highlights
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">{highlights}</p>
+                </div>
               )}
-              <p><strong>Name:</strong> {hotel.name}</p>
-              <p><strong>Address:</strong> {hotel.address}</p>
-              <p><strong>City:</strong> {hotel.city}</p>
-              <p><strong>Rating:</strong> ⭐ {hotel.rating || "N/A"}</p>
+            </div>
 
-              {hotel.room_types?.length > 0 && (
-                <div className="mt-2">
-                  <h4 className="font-medium mb-1">Room Types:</h4>
-                  <ul className="space-y-2">
-                    {hotel.room_types.map(room => (
-                      <li key={room.id} className="flex items-center gap-3 bg-white p-2 rounded shadow-sm">
-                        {room.image_url && (
-                          <img
-                            src={room.image_url}
-                            alt={room.name}
-                            className="w-16 h-16 object-cover rounded"
-                          />
-                        )}
-                        <div>
-                          <p className="font-semibold">{room.name}</p>
-                          <p className="text-sm text-gray-600">Capacity: {room.capacity} pax</p>
-                          <p className="text-sm text-gray-600">{room.base_price} {room.currency} (x{room.quantity})</p>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+            {/* Right Column - Policies & Inclusions */}
+            <div className="space-y-6">
+              {/* Inclusions */}
+              {inclusions && (
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Utensils className="w-6 h-6 text-green-600" />
+                    What's Included
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">{inclusions}</p>
+                </div>
+              )}
+
+              {/* Exclusions */}
+              {exclusions && (
+                <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-2xl p-6">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <Shield className="w-6 h-6 text-red-600" />
+                    What's Not Included
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">{exclusions}</p>
                 </div>
               )}
             </div>
           </div>
-        )}
 
-        {/* Car Info */}
-        {car && (
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold mb-2">🚐 Car & Driver</h3>
-            <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              {car.image_url && (
-                <img
-                  src={car.image_url}
-                  alt={`${car.make} ${car.model}`}
-                  className="w-full h-48 object-cover rounded mb-4"
-                />
-              )}
-              <p><strong>Provider:</strong> {car.provider || "N/A"}</p>
-              <p><strong>Make & Model:</strong> {car.make} {car.model}</p>
-              <p><strong>Category:</strong> {car.category}</p>
-              <p><strong>Daily Rate:</strong> {car.daily_rate} {car.currency}</p>
-              <p><strong>City:</strong> {car.city || "N/A"}</p>
-              <p><strong>Description:</strong> {car.description || "N/A"}</p>
-
-              {/* Driver */}
-              <div className="mt-2">
-                <h4 className="font-medium mb-1">👨‍✈️ Driver Info</h4>
-                <p><strong>Name:</strong> {car.driver_name || "N/A"}</p>
-                <p><strong>Contact:</strong> {car.driver_contact || "N/A"}</p>
+          {/* Hotel Information */}
+          {hotel && (
+            <div className="mb-8">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
+                <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+                  <Hotel className="w-7 h-7 text-blue-600" />
+                  🏨 Accommodation
+                </h3>
+                
+                {hotel.cover_image_url && (
+                  <img
+                    src={hotel.cover_image_url}
+                    alt={hotel.name}
+                    className="w-full h-64 object-cover rounded-xl mb-6 shadow-lg"
+                  />
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <p><strong className="text-gray-900">Name:</strong> {hotel.name}</p>
+                    <p><strong className="text-gray-900">Address:</strong> {hotel.address}</p>
+                    <p><strong className="text-gray-900">City:</strong> {hotel.city}</p>
+                    <p><strong className="text-gray-900">Rating:</strong> ⭐ {hotel.rating || "N/A"}</p>
+                  </div>
+                  
+                  {hotel.room_types?.length > 0 && (
+                    <div>
+                      <h4 className="font-bold text-lg mb-3">Room Types</h4>
+                      <div className="space-y-3">
+                        {hotel.room_types.map(room => (
+                          <div key={room.id} className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm">
+                            {room.image_url && (
+                              <img
+                                src={room.image_url}
+                                alt={room.name}
+                                className="w-16 h-16 object-cover rounded-lg"
+                              />
+                            )}
+                            <div className="flex-1">
+                              <p className="font-semibold text-gray-900">{room.name}</p>
+                              <p className="text-sm text-gray-600">Capacity: {room.capacity} pax</p>
+                              <p className="text-sm text-blue-600 font-medium">
+                                {room.base_price} {room.currency} × {room.quantity}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Book Button */}
-        <div className="flex justify-end">
-          <button
-            className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
-            onClick={() =>
-              navigate("/booking-wizard", { state: { type: "package", data: tourPackage } })
-            }
-            disabled={isExpired || !is_active}
-          >
-            {isExpired ? "Expired" : "Book Now"}
-          </button>
+          {/* Car Information */}
+          {car && (
+            <div className="mb-8">
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6">
+                <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
+                  <Car className="w-7 h-7 text-gray-600" />
+                  🚐 Transportation
+                </h3>
+                
+                {car.image_url && (
+                  <img
+                    src={car.image_url}
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-64 object-cover rounded-xl mb-6 shadow-lg"
+                  />
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <p><strong className="text-gray-900">Provider:</strong> {car.provider || "N/A"}</p>
+                    <p><strong className="text-gray-900">Vehicle:</strong> {car.make} {car.model}</p>
+                    <p><strong className="text-gray-900">Category:</strong> {car.category}</p>
+                    <p><strong className="text-gray-900">Daily Rate:</strong> {car.daily_rate} {car.currency}</p>
+                    <p><strong className="text-gray-900">City:</strong> {car.city || "N/A"}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-bold text-lg mb-3">👨‍✈️ Driver Information</h4>
+                    <div className="space-y-2 bg-white p-4 rounded-xl">
+                      <p><strong>Name:</strong> {car.driver_name || "N/A"}</p>
+                      <p><strong>Contact:</strong> {car.driver_contact || "N/A"}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-end pt-6 border-t border-gray-200">
+            <button
+              onClick={onClose}
+              className="px-8 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:border-gray-400 transition-all duration-200"
+            >
+              Close Details
+            </button>
+            <button
+              onClick={() => onBook ? onBook(tourPackage) : navigate(`/booking-wizard`, { state: { type: "package", data: tourPackage, id:tourPackage.id } })}
+              disabled={isExpired || !is_active}
+              className={`px-8 py-3 font-bold rounded-xl transition-all duration-200 transform hover:scale-105 ${
+                isExpired || !is_active
+                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                  : "bg-gradient-to-r from-yellow-500 to-orange-500 text-gray-700 hover:from-yellow-600 hover:to-orange-600 shadow-lg hover:shadow-xl"
+              }`}
+            >
+              {isExpired ? "Package Expired" : "Book This Package"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
