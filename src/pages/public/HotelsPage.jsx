@@ -166,13 +166,13 @@ const HotelsPage = () => {
               to="/tour-packages"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              🏨 Find Your Stay
+               Find Your Stay
             </Link>
             <Link
               to="/destinations"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              🌍 Explore Destinations
+               Explore Destinations
             </Link>
           </div>
         </div>
@@ -188,7 +188,7 @@ const HotelsPage = () => {
               {/* Destination */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  🌍 Destination
+                   Destination
                 </label>
                 <input
                   type="text"
@@ -202,7 +202,7 @@ const HotelsPage = () => {
               {/* Check-in */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  📅 Check-in
+                   Check-in
                 </label>
                 <input
                   type="date"
@@ -215,7 +215,7 @@ const HotelsPage = () => {
               {/* Check-out */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  📅 Check-out
+                   Check-out
                 </label>
                 <input
                   type="date"
@@ -228,7 +228,7 @@ const HotelsPage = () => {
               {/* Guests */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  👥 Guests
+                   Guests
                 </label>
                 <input
                   type="number"
@@ -305,7 +305,7 @@ const HotelsPage = () => {
                     </div>
                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{hotel.description}</p>
                     <div className="flex justify-between items-center">
-                      <span className="text-2xl font-bold text-blue-600">${hotel.price}</span>
+                      
                       <button
                         onClick={() => openModal(hotel)}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition-all duration-200"
@@ -354,13 +354,13 @@ const HotelsPage = () => {
               to="/tour-packages"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-lg"
             >
-              🏨 Explore All Hotels
+               Explore All Hotels
             </Link>
             <Link
               to="/contact"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              💬 Contact Support
+               Contact Support
             </Link>
           </div>
         </div>
@@ -435,7 +435,7 @@ const HotelsPage = () => {
                 onClick={bookHotel}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 mb-6 text-lg"
               >
-                🏨 Book Now - Starting from ${selectedHotel.price}
+                 Book Now
               </button>
 
               {/* Reviews Section */}

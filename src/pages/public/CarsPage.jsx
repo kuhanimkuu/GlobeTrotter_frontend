@@ -50,14 +50,14 @@ const CarsPage = () => {
   };
 
   const carTypes = [
-    { value: 'suv', label: 'SUV', icon: '🚙' },
-    { value: 'sedan', label: 'Sedan', icon: '🚗' },
-    { value: 'truck', label: 'Truck', icon: '🚚' },
-    { value: 'van', label: 'Van', icon: '🚐' },
-    { value: 'luxury', label: 'Luxury', icon: '🏎️' },
-    { value: 'sports', label: 'Sports', icon: '🚓' },
-    { value: 'compact', label: 'Compact', icon: '🚘' },
-    { value: 'convertible', label: 'Convertible', icon: '🚜' }
+    { value: 'suv', label: 'SUV', icon: '' },
+    { value: 'sedan', label: 'Sedan', icon: '' },
+    { value: 'truck', label: 'Truck', icon: '' },
+    { value: 'van', label: 'Van', icon: '' },
+    { value: 'luxury', label: 'Luxury', icon: '' },
+    { value: 'sports', label: 'Sports', icon: '' },
+    { value: 'compact', label: 'Compact', icon: '' },
+    { value: 'convertible', label: 'Convertible', icon: '' }
   ];
 
   const features = [
@@ -85,13 +85,13 @@ const CarsPage = () => {
               to="/destinations"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg"
             >
-              🚗 Browse All Cars
+               Browse All Cars
             </Link>
             <Link
               to="/tour-packages"
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              📋 Special Offers
+               Special Offers
             </Link>
           </div>
         </div>
@@ -114,7 +114,7 @@ const CarsPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    📍 Pick-up Location
+                     Pick-up Location
                   </label>
                   <input
                     type="text"
@@ -126,7 +126,7 @@ const CarsPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    📅 Pick-up Date
+                     Pick-up Date
                   </label>
                   <input
                     type="date"
@@ -137,7 +137,7 @@ const CarsPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    📅 Drop-off Date
+                    Drop-off Date
                   </label>
                   <input
                     type="date"
@@ -148,7 +148,7 @@ const CarsPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    🚗 Car Type
+                     Car Type
                   </label>
                   <select
                     value={filters.type}
@@ -169,14 +169,14 @@ const CarsPage = () => {
                   type="submit"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg"
                 >
-                  🔍 Search Cars
+                   Search Cars
                 </button>
                 <button
                   type="button"
                   onClick={handleReset}
                   className="border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-bold px-8 py-4 rounded-xl transition-all duration-200"
                 >
-                  🔄 Reset
+                   Reset
                 </button>
               </div>
             </form>
@@ -302,13 +302,13 @@ const CarsPage = () => {
               to="/contact"
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-lg"
             >
-              📞 Contact for Special Rates
+               Contact for Special Rates
             </Link>
             <button
               onClick={handleReset}
               className="border-2 border-white hover:bg-white/20 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 backdrop-blur-sm"
             >
-              🔄 Clear Filters
+               Clear Filters
             </button>
           </div>
         </div>
