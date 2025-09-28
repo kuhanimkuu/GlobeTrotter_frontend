@@ -5,9 +5,9 @@ import ReviewCard from "../../components/cards/ReviewCard";
 
 const HomePage = () => {
   const featuredDestinations = [
-    { id: 1, name: "Maasai Mara", image: "images/OIP-1816564833.jpeg", description: "Wildlife Safari Adventure" },
-    { id: 2, name: "Diani Beach", image: "images/OIP-347162889.jpeg", description: "Tropical Beach Paradise" },
-    { id: 3, name: "Dubai", image: "images/OIP-3724049105.jpeg", description: "Luxury City Experience" },
+    { id: 1, name: "Maasai Mara", image: "/images/OIP-1816564833.jpeg", description: "Wildlife Safari Adventure" },
+    { id: 2, name: "Diani Beach", image: "/images/OIP-347162889.jpeg", description: "Tropical Beach Paradise" },
+    { id: 3, name: "Dubai", image: "/images/OIP-3724049105.jpeg", description: "Luxury City Experience" },
   ];
 
   const reviews = [
@@ -25,10 +25,10 @@ const HomePage = () => {
   ];
 
   const experiences = [
-    { image: "images/OIP-3355514081.jpeg", title: "Wildlife Safaris", description: "Encounter amazing wildlife" },
-    { image: "images/OIP-292472245.jpeg", title: "Beach Holidays", description: "Relax on pristine beaches" },
-    { image: "images/OIP-1900420781.jpeg", title: "City Breaks", description: "Explore vibrant cities" },
-    { image: "images/OIP-3632286247.jpeg", title: "Adventure Sports", description: "Thrilling activities" },
+    { image: "/images/OIP-3355514081.jpeg", title: "Wildlife Safaris", description: "Encounter amazing wildlife" },
+    { image: "/images/OIP-292472245.jpeg", title: "Beach Holidays", description: "Relax on pristine beaches" },
+    { image: "/images/OIP-1900420781.jpeg", title: "City Breaks", description: "Explore vibrant cities" },
+    { image: "/images/OIP-3632286247.jpeg", title: "Adventure Sports", description: "Thrilling activities" },
   ];
 
   return (

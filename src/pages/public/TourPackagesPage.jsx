@@ -62,19 +62,19 @@ const TourPackagesPage = () => {
 
 
   const destinations = [
-    { name: "Maasai Mara", image: "images/maasai-mara.jpeg" },
-    { name: "Diani Beach", image: "images/diani.jpeg" },
-    { name: "Dubai", image: "images/dubai.jpeg" },
-    { name: "Paris", image: "images/paris.jpeg" },
-    { name: "Tokyo", image: "images/tokyo.jpeg" },
-    { name: "New York", image: "images/new-york.jpeg" }
+    { name: "Maasai Mara", image: "/images/maasai-mara.jpeg" },
+    { name: "Diani Beach", image: "/images/diani.jpeg" },
+    { name: "Dubai", image: "/images/dubai.jpeg" },
+    { name: "Paris", image: "/images/paris.jpeg" },
+    { name: "Tokyo", image: "/images/tokyo.jpeg" },
+    { name: "New York", image: "/images/new-york.jpeg" }
   ];
 
   const packageTypes = [
-    { image: "images/beach-getaways.jpeg", title: "Beach Getaways", description: "Relaxing coastal escapes" },
-    { image: "images/safari-adventures.jpeg", title: "Safari Adventures", description: "Wildlife experiences" },
-    { image: "images/city-breaks.jpeg", title: "City Breaks", description: "Urban explorations" },
-    { image: "images/mountain-trek.jpeg", title: "Mountain Treks", description: "Adventure hiking" }
+    { image: "/images/beach-getaways.jpeg", title: "Beach Getaways", description: "Relaxing coastal escapes" },
+    { image: "/images/safari-adventures.jpeg", title: "Safari Adventures", description: "Wildlife experiences" },
+    { image: "/images/city-breaks.jpeg", title: "City Breaks", description: "Urban explorations" },
+    { image: "/images/mountain-trek.jpeg", title: "Mountain Treks", description: "Adventure hiking" }
   ];
 
   const activePackages = packages.filter(pkg => {
