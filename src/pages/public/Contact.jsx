@@ -61,7 +61,7 @@ const ContactPage = () => {
       title: 'Visit Us',
       details: 'Moi Avenue Street',
       description: 'Moi Avenue, Nairobi, Kenya',
-      link: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.166584890607!2d36.81664655!3d-1.2863892499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d45c9d17f9%3A0x8bbf51f7e0e8611!2sMoi%20Avenue%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1727600000000!5m2!1sen!2ske'
+      link: 'https://www.google.com/maps/place/Moi+Avenue,+Nairobi,+Kenya'
     }
   ];
 
