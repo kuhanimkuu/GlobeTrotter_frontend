@@ -411,7 +411,7 @@ const ManageTourPackagesPage = () => {
               </div>
             </div>
 
-            {/* Total Price Display */}
+            {/* Total Price  */}
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl border-2 border-blue-200">
               <p className="text-lg font-bold text-gray-900 text-center">
                 Total Package Price: <span className="text-blue-600">${totalPrice.toFixed(2)}</span>

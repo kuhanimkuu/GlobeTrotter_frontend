@@ -421,7 +421,7 @@ const HotelCard = ({ hotel, destinations, queryClient, deleteHotel, onEdit }) =>
         </div>
       </div>
 
-      {/* Expandable Room Management Section */}
+      {/* Room Management Section */}
       {isExpanded && (
         <div className="mt-4 pt-4 border-t">
           <h4 className="font-bold text-gray-900 mb-3">Room Types Management</h4>
