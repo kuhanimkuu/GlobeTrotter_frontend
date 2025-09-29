@@ -33,7 +33,6 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
   const endDate = end_date ? new Date(end_date) : null;
   const isExpired = endDate && new Date() > endDate;
 
-  // Format price with commas
   const formatPrice = (price) => {
     return new Intl.NumberFormat().format(price);
   };
@@ -127,7 +126,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
     </div>
       {/* Detailed Information Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Left Column - Trip Details */}
+            {/* Left Column  */}
             <div className="space-y-6">
               {/* Dates */}
               <div className="bg-gray-50 rounded-2xl p-6">
@@ -163,7 +162,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
               )}
             </div>
 
-            {/* Right Column - Policies & Inclusions */}
+            {/* Right Column */}
             <div className="space-y-6">
               {/* Inclusions */}
               {inclusions && (
@@ -195,7 +194,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6">
                 <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                   <Hotel className="w-7 h-7 text-blue-600" />
-                  🏨 Accommodation
+                   Accommodation
                 </h3>
                 
                 {hotel.cover_image_url && (
@@ -250,7 +249,7 @@ const PackageDetailModal = ({ tourPackage, onClose, onBook }) => {
               <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6">
                 <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
                   <Car className="w-7 h-7 text-gray-600" />
-                  🚐 Transportation
+                   Transportation
                 </h3>
                 
                 {car.image_url && (

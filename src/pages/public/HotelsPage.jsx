@@ -4,6 +4,8 @@ import { api } from '../../services/api';
 import HotelCard from '../../components/cards/HotelCard';
 import ReviewForm from '../../components/reviews/ReviewForm';
 import ReviewCard from '../../components/cards/ReviewCard';
+import LoginRequiredPopup from '../../components/LoginRequiredPopup'; 
+import { useAuth } from '../../contexts/useAuth';
 
 const HotelsPage = () => {
   const [hotels, setHotels] = useState([]);
@@ -19,6 +21,8 @@ const HotelsPage = () => {
   });
   const navigate = useNavigate();
   const [backendUrl] = useState('http://localhost:8000');
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     loadHotels();
@@ -142,15 +146,20 @@ const HotelsPage = () => {
   };
 
   const bookHotel = () => {
-    if (!selectedHotel) return;
+  if (!selectedHotel) return;
+
+  if (user) {
     navigate("/hotels-booking-wizard", {
-      state: { data: selectedHotel }, 
+      state: { data: selectedHotel },
     });
-  };
+  } else {
+    setShowLoginPopup(true);
+  }
+};
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Matching HomePage */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white py-32">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
@@ -178,7 +187,7 @@ const HotelsPage = () => {
         </div>
       </section>
 
-      {/* Search Filters - Updated Styling */}
+      {/* Search Filters */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-lg p-8">
@@ -246,7 +255,7 @@ const HotelsPage = () => {
                   disabled={loading}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
                 >
-                  {loading ? '🔍 Searching...' : 'Search Hotels'}
+                  {loading ? ' Searching...' : 'Search Hotels'}
                 </button>
                 <button
                   type="button"
@@ -472,6 +481,11 @@ const HotelsPage = () => {
                 ) : (
                   <p className="text-gray-500 text-center py-8">No reviews yet. Be the first to review!</p>
                 )}
+                  {showLoginPopup && (
+                    <LoginRequiredPopup onClose={() => setShowLoginPopup(false)} />
+                  )}
+
+
               </div>
             </div>
           </div>

@@ -141,15 +141,15 @@ const LoginPage = () => {
             <div className="mt-8 pt-8 border-t border-gray-200">
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div className="text-center">
-                  <div className="text-2xl mb-2">🌍</div>
+                  <div className="text-2xl mb-2"></div>
                   <p className="text-sm text-gray-600">Destinations</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl mb-2">✈️</div>
+                  <div className="text-2xl mb-2"></div>
                   <p className="text-sm text-gray-600">Flights</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl mb-2">🏨</div>
+                  <div className="text-2xl mb-2"></div>
                   <p className="text-sm text-gray-600">Hotels</p>
                 </div>
               </div>

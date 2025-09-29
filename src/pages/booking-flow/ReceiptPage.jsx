@@ -39,7 +39,7 @@ const ReceiptPage = () => {
     alert('PDF download functionality would be implemented here');
   };
 
-  // --- Extract Details with Safe Fallbacks ---
+  // Extract Details with Safe Fallbacks 
   const bookingId = booking.id || 'N/A';
   const bookingType = booking.booking_type || booking.type || 'N/A';
   const bookingDate = booking.created_at

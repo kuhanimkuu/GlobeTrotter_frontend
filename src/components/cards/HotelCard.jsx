@@ -70,7 +70,7 @@ const HotelCard = ({ hotel, onView }) => {
           </div>
         </div>
 
-        {/* Price and Button */}
+        {/* View details Button */}
         <div className="flex justify-between items-center pt-4 border-t border-gray-100">
           <div>
             <span className="text-2xl font-bold text-blue-600">${hotel.price || hotel.room_types?.[0]?.base_price || 'N/A'}</span>

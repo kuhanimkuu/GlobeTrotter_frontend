@@ -97,7 +97,7 @@ const TourPackageCard = ({
               {selectedItem.room_types?.length > 0 && (
                 <div className="bg-white rounded-xl p-4 shadow-sm">
                   <label className="block text-lg font-bold text-gray-900 mb-3">
-                    🛏️ Select Room Type
+                     Select Room Type
                   </label>
                   <select
                     value={selectedRoom?.id || ""}

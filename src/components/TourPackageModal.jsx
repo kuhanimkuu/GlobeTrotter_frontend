@@ -163,7 +163,7 @@ const TourPackageModal = ({ isOpen, onClose, packageData, onBook }) => {
             <div className="space-y-4">
               {/* Dates */}
               <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                <h3 className="font-semibold text-lg mb-3">📅 Travel Dates</h3>
+                <h3 className="font-semibold text-lg mb-3"> Travel Dates</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Start:</span>
@@ -195,7 +195,7 @@ const TourPackageModal = ({ isOpen, onClose, packageData, onBook }) => {
 
               {/* Commission */}
               <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4">
-                <h3 className="font-semibold text-lg mb-2">💸 Commission</h3>
+                <h3 className="font-semibold text-lg mb-2"> Commission</h3>
                 <p className="text-2xl font-bold text-purple-600">{commission}%</p>
                 <p className="text-sm text-gray-600 mt-1">
                   Earn {format.currency((base_price * commission) / 100)} per booking
@@ -207,7 +207,7 @@ const TourPackageModal = ({ isOpen, onClose, packageData, onBook }) => {
           {/* Highlights */}
           {highlights && (
             <div className="mb-6">
-              <h3 className="text-xl font-bold mb-3">✨ Highlights</h3>
+              <h3 className="text-xl font-bold mb-3"> Highlights</h3>
               <div className="bg-yellow-50 rounded-xl p-4">
                 <p className="text-gray-700 leading-relaxed">{highlights}</p>
               </div>
@@ -217,7 +217,7 @@ const TourPackageModal = ({ isOpen, onClose, packageData, onBook }) => {
           {/* Description */}
           {description && (
             <div className="mb-6">
-              <h3 className="text-xl font-bold mb-3">📖 Description</h3>
+              <h3 className="text-xl font-bold mb-3"> Description</h3>
               <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <p className="text-gray-700 leading-relaxed">{description}</p>
               </div>
@@ -242,7 +242,7 @@ const TourPackageModal = ({ isOpen, onClose, packageData, onBook }) => {
               onClick={() => onBook && onBook(packageData)}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-8 py-4 rounded-xl transition-all duration-200 transform hover:scale-105 shadow-lg text-lg"
             >
-              🎫 Book This Package Now
+               Book This Package Now
             </button>
           </div>
         </div>

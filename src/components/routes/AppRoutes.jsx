@@ -58,15 +58,11 @@ import SettingsPage from "../../pages/settings/SettingsPage";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* =========================
-          Auth (public, outside Layout)
-      ========================== */}
+      {/* Auth */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
-      {/* =========================
-          Layout-wrapped routes
-      ========================== */}
+      {/* Layout-wrapped routes */}
       <Route path="/" element={<Layout />}>
         {/* Public routes */}
         <Route index element={<HomePage />} />
@@ -160,7 +156,7 @@ const AppRoutes = () => {
   }
 />
 
-{/* Organizer routes (separate pages) */}
+{/* Organizer routes */}
 <Route
   path="organizer"
   element={

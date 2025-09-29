@@ -11,10 +11,10 @@ const HomePage = () => {
   ];
 
   const reviews = [
-    { id: 1, name: "Alice", text: "Amazing safari experience!", rating: 5, avatar: "👩" },
-    { id: 2, name: "John", text: "Loved the beach holiday!", rating: 4, avatar: "👨" },
-    { id: 3, name: "Sarah", text: "Best vacation ever!", rating: 5, avatar: "👩" },
-    { id: 4, name: "Mike", text: "Excellent service throughout!", rating: 5, avatar: "👨" },
+    { id: 1, name: "Alice", text: "Amazing safari experience!", rating: 5, image: "/images/human3.jpeg" },
+    { id: 2, name: "John", text: "Loved the beach holiday!", rating: 4, image: "/images/human1.jpeg" },
+    { id: 3, name: "Sarah", text: "Best vacation ever!", rating: 5, image: "/images/human4.jpeg" },
+    { id: 4, name: "Mike", text: "Excellent service throughout!", rating: 5, image: "/images/human2.jpeg" },
   ];
 
   const services = [
@@ -129,7 +129,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Experiences Section - Updated */}
+      {/* Experiences Section  */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-4">Popular Experiences</h2>
@@ -155,7 +155,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Reviews Section - Updated */}
+      {/* Reviews Section  */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -169,7 +169,11 @@ const HomePage = () => {
             {reviews.map((review) => (
               <div key={review.id} className="bg-white p-6 rounded-2xl shadow-lg">
                 <div className="flex items-center mb-4">
-                  <div className="text-2xl mr-3">{review.avatar}</div>
+                  <img
+                    src={review.image}
+                    alt={review.name}
+                    className="w-12 h-12 rounded-full object-cover mr-3 border-2 border-yellow-400"
+                  />
                   <div>
                     <h4 className="font-bold text-gray-900">{review.name}</h4>
                     <div className="flex text-yellow-400">
@@ -184,7 +188,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* CTA Banner - Updated */}
+      {/* CTA Banner  */}
       <section className="relative py-32 text-center text-white">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900"></div>
         <div className="absolute inset-0 bg-black/40"></div>

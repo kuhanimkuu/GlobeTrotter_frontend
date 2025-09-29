@@ -437,7 +437,7 @@ export default function BookingWizardPage() {
               onChange={(e) => setFormData((p) => ({ ...p, weBookFlights: e.target.checked }))}
               className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
             />
-            <span className="font-medium">✈️ Yes — please search & book flights for us (optional)</span>
+            <span className="font-medium"> Yes — please search & book flights for us (optional)</span>
           </label>
         </div>
       </div>
@@ -466,7 +466,7 @@ export default function BookingWizardPage() {
                 </svg>
                 Searching Flights...
               </span>
-            ) : '🔍 Search Available Flights'}
+            ) : ' Search Available Flights'}
           </button>
         </div>
 
@@ -518,9 +518,9 @@ export default function BookingWizardPage() {
                       {f.origin} → {f.destination}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
-                      <div>🛫 Departure: {depart ? depart.toLocaleString() : 'N/A'}</div>
-                      <div>🛬 Arrival: {arrive ? arrive.toLocaleString() : 'N/A'}</div>
-                      <div>💺 Seats available: {seats}</div>
+                      <div> Departure: {depart ? depart.toLocaleString() : 'N/A'}</div>
+                      <div> Arrival: {arrive ? arrive.toLocaleString() : 'N/A'}</div>
+                      <div> Seats available: {seats}</div>
                     </div>
                   </div>
 

@@ -40,7 +40,7 @@ const FlightCard = ({ flight, onBook }) => {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border-2 border-transparent hover:border-yellow-400 group">
-      {/* Header - Airline + Price */}
+      {/* Airline + Price */}
       <div className="flex justify-between items-start mb-6">
         <div className="flex items-center gap-3">
           <div className="bg-blue-100 w-12 h-12 rounded-2xl flex items-center justify-center">
@@ -164,15 +164,9 @@ const FlightCard = ({ flight, onBook }) => {
         >
           {flight.expired ? 'Expired' : 
            flight.seats_available === 0 ? 'Sold Out' : 
-           '✈️ Book Flight'}
+           ' Book Flight'}
         </button>
         
-        <button
-          onClick={() => {/* Add view details functionality */}}
-          className="px-4 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-all duration-200 border-2 border-transparent hover:border-gray-300"
-        >
-          👁️
-        </button>
       </div>
 
       {/* Provider Badge */}

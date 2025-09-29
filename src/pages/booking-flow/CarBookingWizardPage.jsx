@@ -27,14 +27,12 @@ export default function CarBookingWizardPage() {
     special_requests: "",
   });
 
-  // Redirect back if no car
   useEffect(() => {
     if (!car) {
       navigate("/cars");
     }
   }, [car, navigate]);
 
-  // Update passenger info if user changes
   useEffect(() => {
     if (user) {
       setFormData((prev) => ({
@@ -51,7 +49,6 @@ export default function CarBookingWizardPage() {
     }
   }, [user]);
 
-  // ✅ helper to calculate total
   const getCarTotal = () => {
     if (!car || !formData.start_date || !formData.end_date) return 0;
     const start = new Date(formData.start_date);
@@ -111,7 +108,6 @@ export default function CarBookingWizardPage() {
       navigate("/payment", {
         state: {
           booking: response,
-          // let PaymentPage handle picking total
         },
       });
     } catch (err) {

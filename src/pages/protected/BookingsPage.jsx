@@ -37,7 +37,6 @@ const BookingsPage = () => {
   };
 
   const handleViewDetails = (booking) => {
-    // Navigate to booking details page with booking data
     navigate(`/booking/${booking.id}`, { 
       state: { 
         bookingData: booking,
@@ -49,8 +48,6 @@ const BookingsPage = () => {
   const handleDownloadReceipt = async (bookingId) => {
     try {
       setDownloading(bookingId);
-      
-      // Try to download receipt via API if available
       if (api.booking.downloadReceipt) {
         const response = await api.booking.downloadReceipt(bookingId);
         
@@ -59,12 +56,9 @@ const BookingsPage = () => {
           return;
         }
       }
-      
-      // Fallback: Generate client-side receipt
       generateClientSideReceipt(bookingId);
     } catch (error) {
       console.error('Failed to download receipt:', error);
-      // Fallback to client-side receipt generation
       generateClientSideReceipt(bookingId);
     } finally {
       setDownloading(null);
@@ -342,7 +336,7 @@ For support: support@travelagency.com
                         </>
                       )}
                       
-                      {/* Print receipt button for all statuses */}
+                      {/* Print receipt button */}
                       <button
                         onClick={() => handlePrintReceipt(booking.id)}
                         className="bg-gray-600 hover:bg-gray-700 text-white font-bold px-4 py-3 rounded-xl transition-all duration-200"

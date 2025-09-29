@@ -69,7 +69,7 @@ const CarsPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Matching Homepage */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white py-32">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
@@ -97,7 +97,7 @@ const CarsPage = () => {
         </div>
       </section>
 
-      {/* Search Filters - Updated Design */}
+      {/* Search Filters  */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">

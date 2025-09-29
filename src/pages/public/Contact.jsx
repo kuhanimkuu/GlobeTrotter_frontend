@@ -23,13 +23,13 @@ const ContactPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
+   
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
       
-      // Reset status after 5 seconds
+
       setTimeout(() => setSubmitStatus(null), 5000);
     }, 2000);
   };
@@ -381,13 +381,17 @@ const ContactPage = () => {
           <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 border-2 border-blue-200">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                {/* Placeholder for map - in real implementation, use Google Maps or similar */}
-                <div className="bg-gradient-to-br from-blue-200 to-purple-200 rounded-2xl h-80 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">🗺️</div>
-                    <p className="text-blue-800 font-semibold">Interactive Map</p>
-                    <p className="text-blue-600 text-sm">123 Adventure Street, Nairobi, Kenya</p>
-                  </div>
+                {/* Google Maps iframe */}
+                <div className="rounded-2xl overflow-hidden h-80 shadow-lg">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.166584890607!2d36.81664655!3d-1.2863892499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d45c9d17f9%3A0x8bbf51f7e0e8611!2sMoi%20Avenue%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1727600000000!5m2!1sen!2ske"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
               </div>
               
@@ -395,8 +399,8 @@ const ContactPage = () => {
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Address</h3>
                   <p className="text-gray-600">
-                    Adventure Trip Headquarters<br />
-                    123 Adventure Street<br />
+                    GlobeTrotter Headquarters<br />
+                    Moi Avenue<br />
                     Nairobi 00100, Kenya
                   </p>
                 </div>

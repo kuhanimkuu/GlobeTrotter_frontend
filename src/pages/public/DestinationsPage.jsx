@@ -88,7 +88,7 @@ const DestinationsPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Matching HomePage */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white py-32">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">

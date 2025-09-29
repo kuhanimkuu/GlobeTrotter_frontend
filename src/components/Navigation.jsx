@@ -19,7 +19,6 @@ const Navigation = () => {
 
   const displayName = user?.first_name || user?.username;
 
-  // Updated color scheme to match homepage
   const linkClass = (base = "") =>
     `font-medium transition-colors duration-200 ${
       isScrolled 
@@ -64,6 +63,9 @@ const Navigation = () => {
               </Link>
               <Link to="/cars" className={linkClass("py-2")}>
                 Cars
+              </Link>
+              <Link to="/contact" className={linkClass("py-2")}>
+                Contact Us
               </Link>
             </div>
           </div>

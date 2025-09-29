@@ -1,4 +1,3 @@
-// src/pages/booking-flow/FlightBookingWizardPage.jsx
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
@@ -9,7 +8,7 @@ export default function FlightBookingWizardPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const flight = state?.data; // passed from "Book Now"
+  const flight = state?.data; 
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

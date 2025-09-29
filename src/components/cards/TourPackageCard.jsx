@@ -44,7 +44,7 @@ const TourPackageCard = ({ tourPackage, onViewDetails }) => {
     {/* Gradient Overlay */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-    {/* Availability or Expired */}
+    {/* Availability */}
     <div className="absolute top-3 left-3">
       <span
         className={`px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm ${

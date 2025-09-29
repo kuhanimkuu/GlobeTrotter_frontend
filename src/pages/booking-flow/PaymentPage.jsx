@@ -53,10 +53,8 @@ const PaymentPage = () => {
       metadata: { note: booking.note || 'Payment for flight booking' },
     };
 
-    // Call your fake API
     const paymentResult = await api.payments.create(paymentPayload);
 
-    // Wrap with all details receipt needs
     const enrichedPayment = {
       ...paymentResult,
       method: paymentMethod,

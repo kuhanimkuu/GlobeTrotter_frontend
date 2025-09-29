@@ -76,7 +76,7 @@ const ReviewCard = ({ review }) => {
       {/* Metadata */}
       <div className="flex items-center justify-between text-sm text-gray-600 border-t border-gray-200 pt-3">
         <span className="font-medium bg-white px-3 py-1 rounded-full shadow-sm">
-          📅 {formatDate(review.created_at)}
+           {formatDate(review.created_at)}
         </span>
         <span className="font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
           {review.content_object_display || "Hotel Stay"}

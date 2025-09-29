@@ -4,6 +4,7 @@ import { api } from '../../services/api';
 import { useAuth } from '../../contexts/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import { Search, Plane, Users, Calendar, Navigation, RefreshCw } from 'lucide-react';
+import LoginRequiredPopup from "../../components/LoginRequiredPopup";
 
 const FlightsPage = () => {
   const [flights, setFlights] = useState([]);
@@ -15,8 +16,10 @@ const FlightsPage = () => {
     departure_date: '',
     passengers: 1,
   });
+   const { user } = useAuth();
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
-  const { isAuthenticated } = useAuth();
+ 
   const navigate = useNavigate();
   
   const normalizeFlights = (flights) =>
@@ -66,21 +69,23 @@ const FlightsPage = () => {
     }
   };
 
-  const handleBookFlight = (flight) => {
-    if (!isAuthenticated) {
-      navigate('/auth/login', { state: { from: '/flights' } });
-      return;
-    }
+const handleBookFlight = (flight) => {
+  if (!user) {
+    setShowLoginPopup(true);
+    return;
+  }
 
-    if (flight.expired) {
-      alert('This flight offer has expired.');
-      return;
-    }
+  if (flight.expired) {
+    alert("This flight offer has expired.");
+    return;
+  }
 
-    navigate('/flights-booking-wizard', {
-      state: { type: 'flight', data: flight },
-    });
-  };
+  navigate("/flights-booking-wizard", {
+    state: { type: "flight", data: flight },
+  });
+};
+
+
 
   const resetForm = async () => {
     setSearchParams({
@@ -104,7 +109,7 @@ const FlightsPage = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - Exact match to homepage gradient */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-purple-900 text-white py-32">
         <div className="absolute inset-0 bg-black/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
@@ -297,13 +302,18 @@ const FlightsPage = () => {
                     Show All Flights
                   </button>
                 )}
+                {showLoginPopup && (
+          <LoginRequiredPopup onClose={() => setShowLoginPopup(false)} />
+        )}
               </div>
             )
           )}
+          
+
         </div>
       </section>
 
-      {/* CTA Banner - Exact match to homepage gradient */}
+      {/* CTA Banner */}
       <section className="relative py-32 text-center text-white">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900"></div>
         <div className="absolute inset-0 bg-black/40"></div>
