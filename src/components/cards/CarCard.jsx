@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Car, MapPin, Users, Fuel, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../contexts/useAuth";
+import LoginRequiredPopup from "../LoginRequiredPopup";
 const CarCard = ({ car }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-
+const [showLoginPopup, setShowLoginPopup] = useState(false);
+const { user } = useAuth();
   const handleRentNow = () => {
+    if (!user) {
+      setShowLoginPopup(true);
+      return;
+    }
     navigate("/cars-booking-wizard", { state: { data: car } });
   };
 
@@ -211,11 +217,18 @@ const CarCard = ({ car }) => {
                 >
                   Close
                 </button>
+     
               </div>
             </div>
           </div>
         </div>
       )}
+                 {showLoginPopup && (
+  <LoginRequiredPopup
+    resourceType="rent a car"
+    onClose={() => setShowLoginPopup(false)}
+  />
+)}
     </>
   );
 };

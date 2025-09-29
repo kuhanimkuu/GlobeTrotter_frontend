@@ -9,19 +9,11 @@ const FlightCard = ({ flight, onBook }) => {
   const navigate = useNavigate();
 
   const handleBookFlight = () => {
-    if (!isAuthenticated) {
-      navigate('/auth/login', { state: { from: '/flights' } });
-      return;
-    }
+  if (onBook) {
+    onBook(flight);   
+  }
+};
 
-    if (onBook) {
-      onBook(flight);
-    } else {
-      navigate('/protected/booking', {
-        state: { type: 'flight', data: flight }
-      });
-    }
-  };
 
   const formatTime = (dateTime) => {
     if (!dateTime) return '';

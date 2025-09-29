@@ -302,13 +302,13 @@ const handleBookFlight = (flight) => {
                     Show All Flights
                   </button>
                 )}
-                {showLoginPopup && (
-          <LoginRequiredPopup onClose={() => setShowLoginPopup(false)} />
-        )}
+         
               </div>
             )
           )}
-          
+                 {showLoginPopup && (
+          <LoginRequiredPopup onClose={() => setShowLoginPopup(false)} />
+        )}
 
         </div>
       </section>

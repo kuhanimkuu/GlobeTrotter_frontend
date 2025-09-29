@@ -1,12 +1,22 @@
 import React from "react";
 
-const LoginRequiredPopup = ({ onClose }) => {
+const LoginRequiredPopup = ({ onClose, type = "item" }) => {
+  // Map type → readable name
+  const typeLabels = {
+    flight: "flight",
+    hotel: "hotel",
+    tour: "tour package",
+    car: "car rental",
+  };
+
+  const label = typeLabels[type] || "this service";
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-sm text-center">
         <h2 className="text-xl font-bold mb-2">Login Required</h2>
         <p className="text-gray-600 mb-4">
-          You need to be logged in to book this tour package.
+          You need to be logged in to book {label}.
         </p>
         <div className="flex justify-center gap-4">
           <button

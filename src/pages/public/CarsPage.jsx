@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../services/api';
 import CarCard from '../../components/cards/CarCard';
+import { useAuth } from '../../contexts/useAuth'; 
+import LoginRequiredPopup from '../../components/LoginRequiredPopup'; 
+
 
 const CarsPage = () => {
   const [cars, setCars] = useState([]);
@@ -13,7 +16,8 @@ const CarsPage = () => {
     end_date: '',
     type: ''
   });
-
+   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const { user } = useAuth();
   const fetchCars = async (params = {}) => {
     try {
       const response =
