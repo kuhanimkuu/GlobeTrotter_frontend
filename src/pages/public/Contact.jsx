@@ -59,7 +59,7 @@ const ContactPage = () => {
     {
       icon: '📍',
       title: 'Visit Us',
-      details: '123 Adventure Street',
+      details: 'Moi Avenue Street',
       description: 'Moi Avenue, Nairobi, Kenya',
       link: '#map'
     }
